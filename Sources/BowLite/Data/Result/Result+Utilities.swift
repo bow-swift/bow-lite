@@ -9,3 +9,16 @@ public extension Result {
         }
     }
 }
+
+extension Result: Semigroup where Failure: Semigroup, Success: Semigroup {
+    public func combine(_ other: Result<Success, Failure>) -> Result<Success, Failure> {
+        switch (self, other) {
+        case (.failure(let f1), .failure(let f2)):
+            return .failure(f1.combine(f2))
+        case (.success(let s1), .success(let s2)):
+            return .success(s1.combine(s2))
+        case (.failure(let f), _), (_, .failure(let f)):
+            return .failure(f)
+        }
+    }
+}
