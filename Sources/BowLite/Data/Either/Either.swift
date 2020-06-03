@@ -93,3 +93,9 @@ extension Either: Semigroup where Left: Semigroup, Right: Semigroup {
         }
     }
 }
+
+extension Either: Monoid where Left: Monoid, Right: Monoid {
+    public static var empty: Either<Left, Right> {
+        .right(Right.empty)
+    }
+}
