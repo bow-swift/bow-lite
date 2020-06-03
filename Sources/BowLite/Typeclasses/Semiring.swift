@@ -5,7 +5,7 @@ public protocol Semiring: Monoid {
 }
 
 public extension Semiring {
-    static var empty: Self {
+    static var zero: Self {
         Self.empty
     }
     
