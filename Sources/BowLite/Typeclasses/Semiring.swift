@@ -1,6 +1,5 @@
 public protocol Semiring: Monoid {
     func multiply(_ other: Self) -> Self
-    static var zero: Self { get }
     static var one: Self { get }
 }
 
