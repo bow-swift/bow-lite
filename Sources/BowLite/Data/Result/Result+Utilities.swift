@@ -22,3 +22,9 @@ extension Result: Semigroup where Failure: Semigroup, Success: Semigroup {
         }
     }
 }
+
+extension Result: Monoid where Failure: Monoid, Success: Monoid {
+    public static var empty: Result<Success, Failure> {
+        .success(.empty)
+    }
+}
