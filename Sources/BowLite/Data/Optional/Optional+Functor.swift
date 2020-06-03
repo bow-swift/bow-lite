@@ -4,7 +4,7 @@ public extension Optional {
     }
     
     func `as`<B>(_ b: B) -> B? {
-        self.map { _ in b }
+        self.map(constant(b))
     }
     
     func void() -> Void? {

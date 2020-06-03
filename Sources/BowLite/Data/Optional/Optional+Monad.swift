@@ -1,10 +1,10 @@
 public extension Optional {
     func flatten<A>() -> A? where Wrapped == A? {
-        self.flatMap { $0 }
+        self.flatMap(id)
     }
     
     func followedBy<A>(_ fa: A?) -> A? {
-        self.flatMap { _ in fa }
+        self.flatMap(constant(fa))
     }
     
     func forEffect<A>(_ fa: A?) -> Wrapped? {

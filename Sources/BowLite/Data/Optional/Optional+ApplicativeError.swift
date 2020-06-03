@@ -4,11 +4,11 @@ public extension Optional {
     }
     
     static func from<L>(either: Either<L, Wrapped>) -> Wrapped? {
-        either.fold({ _ in nil }, { $0 })
+        either.fold(constant(nil), id)
     }
     
     static func from<E: Error>(result: Result<Wrapped, E>) -> Wrapped? {
-        result.fold({ $0 }, { _ in nil })
+        result.fold(id, constant(nil))
     }
     
     func handleErrorWith(_ f: @escaping () -> Wrapped?) -> Wrapped? {
