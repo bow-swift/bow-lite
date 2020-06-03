@@ -11,3 +11,9 @@ extension Id: Semigroup where Wrapped: Semigroup {
         Id(self.value.combine(other.value))
     }
 }
+
+extension Id: Monoid where Wrapped: Monoid {
+    public static var empty: Id<Wrapped> {
+        Id(.empty)
+    }
+}
