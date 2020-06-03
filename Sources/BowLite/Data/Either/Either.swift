@@ -80,3 +80,16 @@ public enum Either<Left, Right> {
         }
     }
 }
+
+extension Either: Semigroup where Left: Semigroup, Right: Semigroup {
+    public func combine(_ other: Either<Left, Right>) -> Either<Left, Right> {
+        switch (self, other) {
+        case (.left(let l1), .left(let l2)):
+            return .left(l1.combine(l2))
+        case (.right(let r1), .right(let r2)):
+            return .right(r1.combine(r2))
+        case (.left(let l), _), (_, .left(let l)):
+            return .left(l)
+        }
+    }
+}
