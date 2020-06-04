@@ -5,11 +5,11 @@ public extension Function where Input == Output {
 }
 
 public extension Function {
-    static func local(_ f: @escaping (Input) -> Input) -> Function<Input, Output> {
+    func local(_ f: @escaping (Input) -> Input) -> Function<Input, Output> {
         self.contramap(f)
     }
     
-    static func reader(_ f: (Input) -> Output) -> Function<Input, Output> {
+    static func reader(_ f: @escaping (Input) -> Output) -> Function<Input, Output> {
         Function(f)
     }
 }
