@@ -1,6 +1,6 @@
 public extension Result {
     static func lift<B>(_ f: @escaping (Success) -> B) -> (Result<Success, Failure>) -> Result<B, Failure> {
-        { either in either.map(f) }
+        { result in result.map(f) }
     }
     
     func `as`<B>(_ b: B) -> Result<B, Failure> {

@@ -1,6 +1,6 @@
 public extension Id {
     static func lift<B>(_ f: @escaping (Wrapped) -> B) -> (Id<Wrapped>) -> Id<B> {
-        { either in either.map(f) }
+        { id in id.map(f) }
     }
     
     func map<B>(_ f: @escaping (Wrapped) -> B) -> Id<B> {
