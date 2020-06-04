@@ -15,3 +15,9 @@ extension Const: Semigroup where Constant: Semigroup {
         Const(self.value.combine(other.value))
     }
 }
+
+extension Const: Monoid where Constant: Monoid {
+    public static var empty: Const<Constant, Variable> {
+        Const(.empty)
+    }
+}
