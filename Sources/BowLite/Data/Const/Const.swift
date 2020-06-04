@@ -9,3 +9,9 @@ public struct Const<Constant, Variable> {
         Const<Constant, Other>(value)
     }
 }
+
+extension Const: Semigroup where Constant: Semigroup {
+    public func combine(_ other: Const<Constant, Variable>) -> Const<Constant, Variable> {
+        Const(self.value.combine(other.value))
+    }
+}
