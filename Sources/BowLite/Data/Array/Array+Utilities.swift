@@ -12,3 +12,9 @@ extension Array: Semigroup {
         self + other
     }
 }
+
+extension Array: Monoid {
+    public static var empty: Array<Element> {
+        []
+    }
+}
