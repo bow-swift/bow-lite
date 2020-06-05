@@ -85,3 +85,15 @@ public extension Lens where Source == Target {
         Lens(get: id, set: { _, newSource in newSource })
     }
 }
+
+public extension WritableKeyPath {
+    var lens: Lens<Root, Value> {
+        Lens(
+            get: { root in root[keyPath: self] },
+            set: { root, newValue in
+                var copy = root
+                copy[keyPath: self] = newValue
+                return copy
+            })
+    }
+}
