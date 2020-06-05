@@ -37,3 +37,11 @@ public enum Try<Success> {
         fold(constant(nil), id)
     }
 }
+
+extension Try: CustomStringConvertible where Success: CustomStringConvertible {
+    public var description: String {
+        fold(
+            { error in "Failure(\(error))" },
+            { success in "Success(\(success.description))" })
+    }
+}

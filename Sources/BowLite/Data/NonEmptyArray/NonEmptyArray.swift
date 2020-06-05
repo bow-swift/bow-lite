@@ -67,3 +67,9 @@ extension NonEmptyArray: Semigroup {
 }
 
 extension NonEmptyArray: Equatable where Element: Equatable {}
+
+extension NonEmptyArray: CustomStringConvertible where Element: CustomStringConvertible {
+    public var description: String {
+        "NEA(\(asArray.description))"
+    }
+}

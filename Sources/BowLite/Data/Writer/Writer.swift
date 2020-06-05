@@ -9,3 +9,9 @@ public struct Writer<Accumulator, Value> {
 }
 
 extension Writer: Equatable where Accumulator: Equatable, Value: Equatable {}
+
+extension Writer: CustomStringConvertible where Accumulator: CustomStringConvertible, Value: CustomStringConvertible {
+    public var description: String {
+        "Writer(\(accumulator.description), \(value.description))"
+    }
+}

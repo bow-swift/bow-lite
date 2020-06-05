@@ -38,3 +38,12 @@ public enum Validated<Invalid, Valid> {
 }
 
 extension Validated: Equatable where Invalid: Equatable, Valid: Equatable {}
+
+extension Validated: CustomStringConvertible where Invalid: CustomStringConvertible, Valid: CustomStringConvertible {
+    public var description: String {
+        fold(
+            { invalid in "Invalid(\(invalid.description))" },
+            { valid in "Valid(\(valid.description))" }
+        )
+    }
+}

@@ -21,3 +21,9 @@ extension Const: Monoid where Constant: Monoid {
         Const(.empty)
     }
 }
+
+extension Const: CustomStringConvertible where Constant: CustomStringConvertible {
+    public var description: String {
+        "Const(\(self.value.description))"
+    }
+}

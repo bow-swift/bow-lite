@@ -101,3 +101,12 @@ extension Either: Monoid where Left: Monoid, Right: Monoid {
 }
 
 extension Either: Equatable where Left: Equatable, Right: Equatable {}
+
+extension Either: CustomStringConvertible where Left: CustomStringConvertible, Right: CustomStringConvertible {
+    public var description: String {
+        fold(
+            { left in "Left(\(left.description))" },
+            { right in "Right(\(right.description))" }
+        )
+    }
+}

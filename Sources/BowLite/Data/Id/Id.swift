@@ -19,3 +19,9 @@ extension Id: Monoid where Wrapped: Monoid {
 }
 
 extension Id: Equatable where Wrapped: Equatable {}
+
+extension Id: CustomStringConvertible where Wrapped: CustomStringConvertible {
+    public var description: String {
+        "Id(\(value.description))"
+    }
+}

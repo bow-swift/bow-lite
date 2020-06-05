@@ -62,3 +62,13 @@ public enum Ior<Left, Right> {
 }
 
 extension Ior: Equatable where Left: Equatable, Right: Equatable {}
+
+extension Ior: CustomStringConvertible where Left: CustomStringConvertible, Right: CustomStringConvertible {
+    public var description: String {
+        fold(
+            { left in "Left(\(left.description))" },
+            { right in "Right(\(right.description))" },
+            { left, right in "Both(\(left.description), \(right.description))" }
+        )
+    }
+}
