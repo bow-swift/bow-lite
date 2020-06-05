@@ -95,6 +95,20 @@ public struct AffineTraversal<Source, Target> {
             }
         )
     }
+    
+    public func compose<NewTarget>(
+        _ traversal: Traversal<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        Traversal<Source, NewTarget>(
+            modify: { source, transform in
+                self.get(source).map { target in
+                    traversal.modify(target, transform)
+                }.map { newTarget in
+                    self.set(source, newTarget)
+                } ?? source
+            }
+        )
+    }
 }
 
 public extension AffineTraversal where Source == Target {
