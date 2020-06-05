@@ -36,6 +36,4 @@ public enum Try<Success> {
     public var successValue: Success? {
         fold(constant(nil), id)
     }
-    
-    
 }

@@ -60,3 +60,5 @@ public enum Ior<Left, Right> {
              { l, r in Ior<A, B>.both(f(l), g(r)) })
     }
 }
+
+extension Ior: Equatable where Left: Equatable, Right: Equatable {}

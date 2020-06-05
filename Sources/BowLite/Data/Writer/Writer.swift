@@ -7,3 +7,5 @@ public struct Writer<Accumulator, Value> {
         self.value = value
     }
 }
+
+extension Writer: Equatable where Accumulator: Equatable, Value: Equatable {}

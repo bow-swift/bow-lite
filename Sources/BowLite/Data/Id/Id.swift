@@ -17,3 +17,5 @@ extension Id: Monoid where Wrapped: Monoid {
         Id(.empty)
     }
 }
+
+extension Id: Equatable where Wrapped: Equatable {}

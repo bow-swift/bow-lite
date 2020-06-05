@@ -99,3 +99,5 @@ extension Either: Monoid where Left: Monoid, Right: Monoid {
         .right(Right.empty)
     }
 }
+
+extension Either: Equatable where Left: Equatable, Right: Equatable {}

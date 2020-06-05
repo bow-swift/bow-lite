@@ -36,3 +36,5 @@ public enum Validated<Invalid, Valid> {
              Validated<A, B>.valid <<< g)
     }
 }
+
+extension Validated: Equatable where Invalid: Equatable, Valid: Equatable {}

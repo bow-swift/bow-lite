@@ -65,3 +65,5 @@ extension NonEmptyArray: Semigroup {
         self + other
     }
 }
+
+extension NonEmptyArray: Equatable where Element: Equatable {}
