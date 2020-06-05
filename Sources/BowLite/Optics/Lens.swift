@@ -78,6 +78,27 @@ public struct Lens<Source, Target> {
             }
         )
     }
+    
+    public func compose<NewTarget>(
+        _ affine: AffineTraversal<Target, NewTarget>
+    ) -> AffineTraversal<Source, NewTarget> {
+        AffineTraversal<Source, NewTarget>(
+            get: self.get >>> affine.get,
+            set: { source, newTarget in
+                self.set(source, affine.set(self.get(source), newTarget))
+            }
+        )
+    }
+    
+    public func compose<NewTarget>(
+        _ traversal: Traversal<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        Traversal<Source, NewTarget>(
+            modify: { source, transform in
+                self.set(source, traversal.modify(self.get(source), transform))
+            }
+        )
+    }
 }
 
 public extension Lens where Source == Target {
