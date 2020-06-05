@@ -59,3 +59,9 @@ public extension NonEmptyArray where Element: Equatable {
         elements.map(contains).reduce(true, and)
     }
 }
+
+extension NonEmptyArray: Semigroup {
+    public func combine(_ other: NonEmptyArray<Element>) -> NonEmptyArray<Element> {
+        self + other
+    }
+}
