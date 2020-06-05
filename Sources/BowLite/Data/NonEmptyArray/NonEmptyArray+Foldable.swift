@@ -1,4 +1,11 @@
-public extension Array {
+public extension NonEmptyArray {
+    func reduce<B>(
+        _ initialValue: B,
+        _ combine: @escaping (B, Element) -> B
+    ) -> B {
+        self.asArray.reduce(initialValue, combine)
+    }
+    
     func foldLeft<B>(
         _ initialValue: B,
         _ combine: @escaping (B, Element) -> B
@@ -53,7 +60,7 @@ public extension Array {
     }
 }
 
-public extension Array where Element: Monoid {
+public extension NonEmptyArray where Element: Monoid {
     func fold() -> Element {
         self.reduce(Element.empty, Element.combine)
     }
