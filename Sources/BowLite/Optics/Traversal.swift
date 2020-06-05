@@ -50,3 +50,29 @@ public struct Traversal<Source, Target> {
         )
     }
 }
+
+public extension WritableKeyPath {
+    func traversal<Element>() -> Traversal<Root, Element> where Value == [Element] {
+        Traversal { source, transform in
+            var copy = source
+            copy[keyPath: self] = source[keyPath: self].map(transform)
+            return copy
+        }
+    }
+    
+    func each<Element>() -> Traversal<Root, Element> where Value == [Element] {
+        traversal()
+    }
+    
+    func traversal<Element>() -> Traversal<Root, Element> where Value == NEA<Element> {
+        Traversal { source, transform in
+            var copy = source
+            copy[keyPath: self] = source[keyPath: self].map(transform)
+            return copy
+        }
+    }
+    
+    func each<Element>() -> Traversal<Root, Element> where Value == NEA<Element> {
+        traversal()
+    }
+}
