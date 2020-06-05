@@ -6,3 +6,9 @@ public extension Array {
         return self[index]
     }
 }
+
+extension Array: Semigroup {
+    public func combine(_ other: Array<Element>) -> Array<Element> {
+        self + other
+    }
+}
