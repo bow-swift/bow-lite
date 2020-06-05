@@ -104,3 +104,16 @@ public extension AffineTraversal where Source == Target {
         )
     }
 }
+
+public extension WritableKeyPath {
+    func affine<Target>() -> AffineTraversal<Root, Target> where Value == Target? {
+        AffineTraversal(
+            get: { source in source[keyPath: self] },
+            set: { source, newTarget in
+                var copy = source
+                copy[keyPath: self] = newTarget
+                return copy
+            }
+        )
+    }
+}
