@@ -1,9 +1,18 @@
 public extension Array {
     subscript(safe index: Int) -> Element? {
-        guard index >= 0, index < count else {
-            return nil
+        get {
+            guard index >= 0, index < count else {
+                return nil
+            }
+            return self[index]
         }
-        return self[index]
+        
+        set(newValue) {
+            guard index >= 0, index < count, let value = newValue else {
+                return
+            }
+            self[index] = value
+        }
     }
 }
 
