@@ -116,4 +116,15 @@ public extension WritableKeyPath {
             }
         )
     }
+    
+    func index<Target>(_ index: Int) -> AffineTraversal<Root, Target> where Value == [Target] {
+        AffineTraversal(
+            get: { source in source[keyPath: self][safe: index] },
+            set: { source, newTarget in
+                var copy = source
+                copy[keyPath: self][safe: index] = newTarget
+                return copy
+            }
+        )
+    }
 }
