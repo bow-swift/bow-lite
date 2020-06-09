@@ -109,6 +109,19 @@ public struct AffineTraversal<Source, Target> {
             }
         )
     }
+    
+    public func compose<NewTarget>(
+        _ prism: Prism<Target, NewTarget>
+    ) -> AffineTraversal<Source, NewTarget> {
+        AffineTraversal<Source, NewTarget>(
+            get: self.get >=> prism.extract,
+            set: { source, newTarget in
+                self.modify(source) { target in
+                    prism.set(target, newTarget)
+                }
+            }
+        )
+    }
 }
 
 public extension AffineTraversal where Source == Target {

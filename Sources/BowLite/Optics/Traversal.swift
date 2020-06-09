@@ -49,6 +49,18 @@ public struct Traversal<Source, Target> {
             }
         )
     }
+    
+    public func compose<NewTarget>(
+        _ prism: Prism<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        Traversal<Source, NewTarget>(
+            modify: { source, transform in
+                self.modify(source) { target in
+                    prism.modify(target, transform)
+                }
+            }
+        )
+    }
 }
 
 public extension WritableKeyPath {
