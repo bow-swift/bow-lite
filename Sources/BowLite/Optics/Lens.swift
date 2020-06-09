@@ -112,6 +112,14 @@ public struct Lens<Source, Target> {
             }
         )
     }
+    
+    public var asAffineTraversal: AffineTraversal<Source, Target> {
+        AffineTraversal(get: self.get, set: self.set)
+    }
+    
+    public var asTraversal: Traversal<Source, Target> {
+        Traversal(modify: self.modify)
+    }
 }
 
 public extension Lens where Source == Target {

@@ -122,6 +122,10 @@ public struct AffineTraversal<Source, Target> {
             }
         )
     }
+    
+    public var asTraversal: Traversal<Source, Target> {
+        Traversal<Source, Target>(modify: self.modify)
+    }
 }
 
 public extension AffineTraversal where Source == Target {

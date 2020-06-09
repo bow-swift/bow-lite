@@ -125,4 +125,12 @@ public struct Prism<Source, Target> {
             }
         )
     }
+    
+    public var asAffineTraversal: AffineTraversal<Source, Target> {
+        AffineTraversal(get: self.extract, set: self.set)
+    }
+    
+    public var asTraversal: Traversal<Source, Target> {
+        Traversal(modify: self.modify)
+    }
 }
