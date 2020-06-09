@@ -133,4 +133,50 @@ public struct Prism<Source, Target> {
     public var asTraversal: Traversal<Source, Target> {
         Traversal(modify: self.modify)
     }
+    
+    public static func `for`(
+        _ embed: @escaping (Target) -> Source
+    ) -> Prism<Source, Target> {
+        
+        func isSameCase(_ lhs: Source, _ rhs: Source) -> Bool {
+            guard let lhsChild = Mirror(reflecting: lhs).children.first,
+                  let rhsChild = Mirror(reflecting: rhs).children.first else { return false }
+            
+            let lhsLabeledChild = Mirror(reflecting: lhsChild.value).children.first
+            let rhsLabeledChild = Mirror(reflecting: rhsChild.value).children.first
+            
+            return lhsChild.label == rhsChild.label &&
+                   lhsLabeledChild?.label == rhsLabeledChild?.label
+        }
+        
+        func extract(_ source: Source) -> Target? {
+            let mirror = Mirror(reflecting: source)
+            guard let child = mirror.children.first else { return nil }
+            
+            if let value = child.value as? Target {
+                return value
+            } else {
+                let labeledValueMirror = Mirror(reflecting: child.value)
+                return labeledValueMirror.children.first?.value as? Target
+            }
+        }
+        
+        func autoDerivation(_ source: Source) -> Target? {
+            guard let values = extract(source) else { return nil }
+            guard isSameCase(embed(values), source) else { return nil }
+            return values
+        }
+        
+        return Prism(embed: embed, extract: autoDerivation)
+    }
+}
+
+// Using operator / to obtain prisms, as seen on
+// Pointfree's Case Paths: https://github.com/pointfreeco/swift-case-paths
+prefix operator /
+
+public prefix func /<Source, Target>(
+    _ embed: @escaping (Target) -> Source
+) -> Prism<Source, Target> {
+    Prism.for(embed)
 }
