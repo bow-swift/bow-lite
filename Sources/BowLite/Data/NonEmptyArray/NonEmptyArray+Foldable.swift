@@ -13,6 +13,13 @@ public extension NonEmptyArray {
         self.reduce(initialValue, combine)
     }
     
+    func foldRight<B>(
+        _ initialValue: Eval<B>,
+        _ combine: @escaping (Element, Eval<B>) -> Eval<B>
+    ) -> Eval<B> {
+        self.asArray.foldRight(initialValue, combine)
+    }
+    
     func reduceLeftToOptional<B>(
         _ transform: @escaping (Element) -> B,
         _ combine: @escaping (B, Element) -> B
