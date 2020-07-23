@@ -6,6 +6,20 @@ public extension Array {
         self.reduce(initialValue, combine)
     }
     
+    func foldRight<B>(
+        _ initialValue: Eval<B>,
+        _ combine: @escaping (Element, Eval<B>) -> Eval<B>
+    ) -> Eval<B> {
+        func loop(_ array: [Element]) -> Eval<B> {
+            if array.isEmpty {
+                return initialValue
+            } else {
+                return combine(array[0], Eval.defer { loop(Array(array.dropFirst())) })
+            }
+        }
+        return Eval.defer { loop(self) }
+    }
+    
     func reduceLeftToOptional<B>(
         _ transform: @escaping (Element) -> B,
         _ combine: @escaping (B, Element) -> B
