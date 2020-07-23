@@ -272,7 +272,7 @@ public extension EnvIO {
         _ fb: EnvIO<Dependencies, Failure, B>,
         _ f: @escaping (A, B) -> Success
     ) -> EnvIO<Dependencies, Failure, Success> {
-        EnvIO { dependencies in
+        EnvIO { dependencies in
             IO.parMap(fa.run(dependencies), fb.run(dependencies), f)
         }
     }
@@ -283,7 +283,7 @@ public extension EnvIO {
         _ fc: EnvIO<Dependencies, Failure, C>,
         _ f: @escaping (A, B, C) -> Success
     ) -> EnvIO<Dependencies, Failure, Success> {
-        EnvIO { dependencies in
+        EnvIO { dependencies in
             IO.parMap(fa.run(dependencies), fb.run(dependencies), fc.run(dependencies), f)
         }
     }
