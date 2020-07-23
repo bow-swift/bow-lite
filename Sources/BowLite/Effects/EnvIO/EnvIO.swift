@@ -114,6 +114,10 @@ public struct EnvIO<Dependencies, Failure: Error, Success> {
         self.contramap(f).map(g)
     }
     
+    public func zip<B>(_ other: EnvIO<Dependencies, Failure, B>) -> EnvIO<Dependencies, Failure, (Success, B)> {
+        EnvIO<Dependencies, Failure, (Success, B)>.zip(self, other)
+    }
+    
     public func flatMap<B>(_ f: @escaping (Success) -> EnvIO<Dependencies, Failure, B>) -> EnvIO<Dependencies, Failure, B> {
         EnvIO<Dependencies, Failure, B> { dependencies in
             self.run(dependencies).flatMap { success in
