@@ -358,9 +358,9 @@ public class IO<Failure: Error, Success> {
     ///
     /// - Parameter policy: Retrial policy.
     /// - Returns: A computation that is retried based on the provided policy when it fails.
-//    public func retry<S, O>(_ policy: Schedule<Any, E, S, O>) -> IO<E, A> {
-//        self.env().retry(policy).provide(())
-//    }
+    public func retry<S, O>(_ policy: Schedule<Any, Failure, S, O>) -> IO<Failure, Success> {
+        self.env().retry(policy).provide(())
+    }
     
     /// Retries this computation if it fails based on the provided retrial policy, providing a default computation to handle failures after retrial.
     ///
@@ -370,13 +370,13 @@ public class IO<Failure: Error, Success> {
     ///   - policy: Retrial policy.
     ///   - orElse: Function to handle errors after retrying.
     /// - Returns: A computation that is retried based on the provided policy when it fails.
-//    public func retry<S, O, B>(
-//        _ policy: Schedule<Any, E, S, O>,
-//        orElse: @escaping (E, O) -> IO<E, B>) -> IO<E, Either<B, A>> {
-//        self.env().retry(
-//            policy,
-//            orElse: { e, o in orElse(e, o).env() }).provide(())
-//    }
+    public func retry<S, O, B>(
+        _ policy: Schedule<Any, Failure, S, O>,
+        orElse: @escaping (Failure, O) -> IO<Failure, B>) -> IO<Failure, Either<B, Success>> {
+        self.env().retry(
+            policy,
+            orElse: { e, o in orElse(e, o).env() }).provide(())
+    }
     
     /// Repeats this computation until the provided repeating policy completes, or until it fails.
     ///
@@ -386,13 +386,13 @@ public class IO<Failure: Error, Success> {
     ///   - policy: Repeating policy.
     ///   - onUpdateError: A function providing an error in case the policy fails to update properly.
     /// - Returns: A computation that is repeated based on the provided policy when it succeeds.
-//    public func `repeat`<S, O>(
-//        _ policy: Schedule<Any, A, S, O>,
-//        onUpdateError: @escaping () -> E = { fatalError("Impossible to update error on repeat.") }) -> IO<E, O> {
-//        self.env().repeat(
-//            policy,
-//            onUpdateError: onUpdateError).provide(())
-//    }
+    public func `repeat`<S, O>(
+        _ policy: Schedule<Any, Success, S, O>,
+        onUpdateError: @escaping () -> Failure = { fatalError("Impossible to update error on repeat.") }) -> IO<Failure, O> {
+        self.env().repeat(
+            policy,
+            onUpdateError: onUpdateError).provide(())
+    }
     
     /// Repeats this computation until the provided repeating policy completes, or until it fails, with a function to handle potential failures.
     ///
@@ -401,15 +401,15 @@ public class IO<Failure: Error, Success> {
     ///   - onUpdateError: A function providing an error in case the policy fails to update properly.
     ///   - orElse: A function to return a computation in case of error.
     /// - Returns: A computation that is repeated based on the provided policy when it succeeds.
-//    public func `repeat`<S, O, B>(
-//        _ policy: Schedule<Any, A, S, O>,
-//        onUpdateError: @escaping () -> E = { fatalError("Impossible to update error on repeat.") },
-//        orElse: @escaping (E, O?) -> IO<E, B>) -> IO<E, Either<B, O>> {
-//        self.env().repeat(
-//            policy,
-//            onUpdateError: onUpdateError,
-//            orElse: { e, o in orElse(e, o).env() }).provide(())
-//    }
+    public func `repeat`<S, O, B>(
+        _ policy: Schedule<Any, Success, S, O>,
+        onUpdateError: @escaping () -> Failure = { fatalError("Impossible to update error on repeat.") },
+        orElse: @escaping (Failure, O?) -> IO<Failure, B>) -> IO<Failure, Either<B, O>> {
+        self.env().repeat(
+            policy,
+            onUpdateError: onUpdateError,
+            orElse: { e, o in orElse(e, o).env() }).provide(())
+    }
 }
 
 public extension IO where Success == Void {
