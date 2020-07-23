@@ -110,3 +110,9 @@ extension Either: CustomStringConvertible where Left: CustomStringConvertible, R
         )
     }
 }
+
+public extension Either where Left == Right {
+    func merge() -> Right {
+        self.fold(id, id)
+    }
+}
