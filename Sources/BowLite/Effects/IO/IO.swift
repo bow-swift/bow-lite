@@ -16,9 +16,9 @@ public typealias IOProcF<Failure: Error, Success> = (@escaping Callback<Failure,
 public class IO<Failure: Error, Success> {
     
     /// Creates an EnvIO with no dependencies from this IO.
-//    public func env<D>() -> EnvIO<D, E, A> {
-//        EnvIO { _ in self }
-//    }
+    public func env<D>() -> EnvIO<D, E, A> {
+        EnvIO { _ in self }
+    }
     
     /// Creates an IO from a side-effectful function.
     ///
