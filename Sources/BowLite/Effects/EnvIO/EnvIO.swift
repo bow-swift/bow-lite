@@ -182,6 +182,91 @@ public struct EnvIO<Dependencies, Failure: Error, Success> {
     ) {
         self.run(dependepencies).unsafeRunAsync(on: queue, callback)
     }
+    
+    /// Retries this computation if it fails based on the provided retrial policy.
+    ///
+    /// This computation will be at least executed once, and if it fails, it will be retried according to the policy.
+    ///
+    /// - Parameter policy: Retrial policy.
+    /// - Returns: A computation that is retried based on the provided policy when it fails.
+    func retry<S, O>(_ policy: Schedule<Dependencies, Failure, S, O>) -> EnvIO<Dependencies, Failure, Success> {
+        retry(policy, orElse: { e, _ in EnvIO.raiseError(e) })
+            .map { x in x.merge() }
+    }
+    
+    /// Retries this computation if it fails based on the provided retrial policy, providing a default computation to handle failures after retrial.
+    ///
+    /// This computation will be at least executed once, and if it fails, it will be retried according to the policy.
+    ///
+    /// - Parameters:
+    ///   - policy: Retrial policy.
+    ///   - orElse: Function to handle errors after retrying.
+    /// - Returns: A computation that is retried based on the provided policy when it fails.
+    func retry<S, O, B>(
+        _ policy: Schedule<Dependencies, Failure, S, O>,
+        orElse: @escaping (Failure, O) -> EnvIO<Dependencies, Failure, B>) -> EnvIO<Dependencies, Failure, Either<B, Success>> {
+        func loop(_ state: S) -> EnvIO<Dependencies, Failure, Either<B, Success>> {
+            self.foldM(
+                { err in
+                    policy.update(err, state)
+                        .mapError { _ in err }
+                        .foldM({ _ in orElse(err, policy.extract(err, state)).map(Either<B, Success>.left) },
+                               loop)
+                    
+                },
+                { a in EnvIO<Dependencies, Failure, Either<B, Success>>.pure(.right(a)) })
+        }
+        
+        return policy.initial
+            .mapError { x in x as! Failure }
+            .flatMap(loop)
+    }
+    
+    /// Repeats this computation until the provided repeating policy completes, or until it fails.
+    ///
+    /// This computation will be at least executed once, and if it succeeds, it will be repeated additional times according to the policy.
+    ///
+    /// - Parameters:
+    ///   - policy: Repeating policy.
+    ///   - onUpdateError: A function providing an error in case the policy fails to update properly.
+    /// - Returns: A computation that is repeated based on the provided policy when it succeeds.
+    func `repeat`<S, O>(
+        _ policy: Schedule<Dependencies, Success, S, O>,
+        onUpdateError: @escaping () -> Failure = { fatalError("Impossible to update error on repeat.") }) -> EnvIO<Dependencies, Failure, O> {
+        self.repeat(policy, onUpdateError: onUpdateError) { e, _ in
+            EnvIO<Dependencies, Failure, O>.raiseError(e)
+        }.map { x in x.merge() }
+    }
+    
+    /// Repeats this computation until the provided repeating policy completes, or until it fails, with a function to handle potential failures.
+    ///
+    /// - Parameters:
+    ///   - policy: Repeating policy.
+    ///   - onUpdateError: A function providing an error in case the policy fails to update properly.
+    ///   - orElse: A function to return a computation in case of error.
+    /// - Returns: A computation that is repeated based on the provided policy when it succeeds.
+    func `repeat`<S, O, B>(
+        _ policy: Schedule<Dependencies, Success, S, O>,
+        onUpdateError: @escaping () -> Failure = { fatalError("Impossible to update error on repeat.") },
+        orElse: @escaping (Failure, O?) -> EnvIO<Dependencies, Failure, B>) -> EnvIO<Dependencies, Failure, Either<B, O>> {
+        func loop(_ last: Success, _ state: S) -> EnvIO<Dependencies, Failure, Either<B, O>> {
+            policy.update(last, state)
+                .mapError { _ in onUpdateError() }
+                .foldM(
+                    { _ in EnvIO<Dependencies, Failure, Either<B, O>>.pure(.right(policy.extract(last, state))) },
+                    { s in
+                        self.foldM(
+                            { e in orElse(e, policy.extract(last, state)).map(Either.left) },
+                            { a in loop(a, s) })
+                })
+        }
+        
+        return self.foldM(
+            { e in orElse(e, nil).map(Either.left) },
+            { a in policy.initial
+                .mapError { x in x as! Failure }
+                .flatMap { s in loop(a, s) } })
+    }
 }
 
 public extension EnvIO where Dependencies == Any {
