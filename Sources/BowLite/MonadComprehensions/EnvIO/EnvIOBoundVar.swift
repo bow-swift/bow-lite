@@ -1,6 +1,10 @@
+/// A bound variable is a variable to be used in a monad comprehesion to bind the produced values by a monadic effect.
 public class EnvIOBoundVar<Dependencies, Failure: Error, Value> {
     private var value: Value? = nil
     
+    /// Makes a bound variable.
+    ///
+    /// - Returns: A bound variable.
     public static func make() -> EnvIOBoundVar<Dependencies, Failure, Value> {
         EnvIOBoundVar()
     }
@@ -11,12 +15,24 @@ public class EnvIOBoundVar<Dependencies, Failure: Error, Value> {
         self.value = value
     }
     
+    /// Obtains the value that has been bound to this variable.
+    ///
+    /// If no value has been bound to the variable when this property is invoked, a fatal error is triggered.
     public var get: Value {
         return value!
     }
     
     internal var erased: EnvIOBoundVar<Dependencies, Failure, Any> {
         EnvIOErasedBoundVar<Dependencies, Failure, Value>(self)
+    }
+}
+
+public extension EnvIO {
+    /// Creates a bound variable in this monadic context for the specified type.
+    ///
+    /// - Returns: A bound variable.
+    static func `var`() -> EnvIOBoundVar<Dependencies, Failure, Success> {
+        .make()
     }
 }
 

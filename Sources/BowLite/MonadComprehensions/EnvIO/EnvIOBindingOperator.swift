@@ -2,6 +2,12 @@ internal func erased<Dependencies, Failure: Error, Value>(_ io: EnvIO<Dependenci
     io.map(id)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bound: Variable to be bound in the expression.
+///   - io: Monadic effect.
+/// - Returns: A binding expression.
 public func <-<Dependencies, Failure: Error, Value>(
     _ bound: EnvIOBoundVar<Dependencies, Failure, Value>,
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, Value>
@@ -9,6 +15,12 @@ public func <-<Dependencies, Failure: Error, Value>(
     EnvIOBindingExpression(bound.erased, io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 2-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B)>
@@ -18,6 +30,12 @@ public func <-<Dependencies, Failure: Error, A, B>(
         io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 3-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B, C>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>, EnvIOBoundVar<Dependencies, Failure, C>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B, C)>
@@ -27,6 +45,12 @@ public func <-<Dependencies, Failure: Error, A, B, C>(
         io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 4-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B, C, D>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>, EnvIOBoundVar<Dependencies, Failure, C>, EnvIOBoundVar<Dependencies, Failure, D>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B, C, D)>
@@ -36,6 +60,12 @@ public func <-<Dependencies, Failure: Error, A, B, C, D>(
         io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 5-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B, C, D, E>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>, EnvIOBoundVar<Dependencies, Failure, C>, EnvIOBoundVar<Dependencies, Failure, D>, EnvIOBoundVar<Dependencies, Failure, E>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B, C, D, E)>
@@ -45,6 +75,12 @@ public func <-<Dependencies, Failure: Error, A, B, C, D, E>(
         io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 6-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B, C, D, E, F>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>, EnvIOBoundVar<Dependencies, Failure, C>, EnvIOBoundVar<Dependencies, Failure, D>, EnvIOBoundVar<Dependencies, Failure, E>, EnvIOBoundVar<Dependencies, Failure, F>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B, C, D, E, F)>
@@ -54,6 +90,12 @@ public func <-<Dependencies, Failure: Error, A, B, C, D, E, F>(
         io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 7-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B, C, D, E, F, G>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>, EnvIOBoundVar<Dependencies, Failure, C>, EnvIOBoundVar<Dependencies, Failure, D>, EnvIOBoundVar<Dependencies, Failure, E>, EnvIOBoundVar<Dependencies, Failure, F>, EnvIOBoundVar<Dependencies, Failure, G>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B, C, D, E, F, G)>
@@ -63,6 +105,12 @@ public func <-<Dependencies, Failure: Error, A, B, C, D, E, F, G>(
         io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 8-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B, C, D, E, F, G, H>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>, EnvIOBoundVar<Dependencies, Failure, C>, EnvIOBoundVar<Dependencies, Failure, D>, EnvIOBoundVar<Dependencies, Failure, E>, EnvIOBoundVar<Dependencies, Failure, F>, EnvIOBoundVar<Dependencies, Failure, G>, EnvIOBoundVar<Dependencies, Failure, H>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B, C, D, E, F, G, H)>
@@ -72,6 +120,12 @@ public func <-<Dependencies, Failure: Error, A, B, C, D, E, F, G, H>(
         io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 9-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B, C, D, E, F, G, H, I>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>, EnvIOBoundVar<Dependencies, Failure, C>, EnvIOBoundVar<Dependencies, Failure, D>, EnvIOBoundVar<Dependencies, Failure, E>, EnvIOBoundVar<Dependencies, Failure, F>, EnvIOBoundVar<Dependencies, Failure, G>, EnvIOBoundVar<Dependencies, Failure, H>, EnvIOBoundVar<Dependencies, Failure, I>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B, C, D, E, F, G, H, I)>
@@ -81,6 +135,12 @@ public func <-<Dependencies, Failure: Error, A, B, C, D, E, F, G, H, I>(
         io >>> erased)
 }
 
+/// Creates a binding expression.
+///
+/// - Parameters:
+///   - bounds: A 10-ary tuple of variables to be bound to the values produced by the effect.
+///   - io: Monadic effect.
+/// - Returns: A binding expresssion.
 public func <-<Dependencies, Failure: Error, A, B, C, D, E, F, G, H, I, J>(
     _ bounds: (EnvIOBoundVar<Dependencies, Failure, A>, EnvIOBoundVar<Dependencies, Failure, B>, EnvIOBoundVar<Dependencies, Failure, C>, EnvIOBoundVar<Dependencies, Failure, D>, EnvIOBoundVar<Dependencies, Failure, E>, EnvIOBoundVar<Dependencies, Failure, F>, EnvIOBoundVar<Dependencies, Failure, G>, EnvIOBoundVar<Dependencies, Failure, H>, EnvIOBoundVar<Dependencies, Failure, I>, EnvIOBoundVar<Dependencies, Failure, J>),
     _ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, (A, B, C, D, E, F, G, H, I, J)>
@@ -88,4 +148,12 @@ public func <-<Dependencies, Failure: Error, A, B, C, D, E, F, G, H, I, J>(
     EnvIOBindingExpression(
         EnvIOBoundVar10(bounds.0, bounds.1, bounds.2, bounds.3, bounds.4, bounds.5, bounds.6, bounds.7, bounds.8, bounds.9).erased,
         io >>> erased)
+}
+
+/// Creates a binding expression that discards the produced value.
+///
+/// - Parameter io: Monadic effect.
+/// - Returns: A binding expression.
+public prefix func |<-<Dependencies, Failure: Error, A>(_ io: @autoclosure @escaping () -> EnvIO<Dependencies, Failure, A>) -> EnvIOBindingExpression<Dependencies, Failure> {
+    EnvIOBindingExpression(EnvIOBoundVar(), io >>> erased)
 }
