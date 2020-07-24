@@ -126,6 +126,34 @@ public struct Prism<Source, Target> {
         )
     }
     
+    public static func +<NewTarget>(
+        lhs: Prism<Source, Target>,
+        rhs: Prism<Target, NewTarget>
+    ) -> Prism<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: Prism<Source, Target>,
+        rhs: AffineTraversal<Target, NewTarget>
+    ) -> AffineTraversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: Prism<Source, Target>,
+        rhs: Lens<Target, NewTarget>
+    ) -> AffineTraversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: Prism<Source, Target>,
+        rhs: Traversal<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
     public var asAffineTraversal: AffineTraversal<Source, Target> {
         AffineTraversal(get: self.extract, set: self.set)
     }

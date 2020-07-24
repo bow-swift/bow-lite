@@ -123,6 +123,34 @@ public struct AffineTraversal<Source, Target> {
         )
     }
     
+    public static func +<NewTarget>(
+        lhs: AffineTraversal<Source, Target>,
+        rhs: AffineTraversal<Target, NewTarget>
+    ) -> AffineTraversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: AffineTraversal<Source, Target>,
+        rhs: Lens<Target, NewTarget>
+    ) -> AffineTraversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: AffineTraversal<Source, Target>,
+        rhs: Prism<Target, NewTarget>
+    ) -> AffineTraversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: AffineTraversal<Source, Target>,
+        rhs: Traversal<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
     public var asTraversal: Traversal<Source, Target> {
         Traversal<Source, Target>(modify: self.modify)
     }

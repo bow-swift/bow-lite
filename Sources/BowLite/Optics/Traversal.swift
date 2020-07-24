@@ -61,6 +61,34 @@ public struct Traversal<Source, Target> {
             }
         )
     }
+    
+    public static func +<NewTarget>(
+        lhs: Traversal<Source, Target>,
+        rhs: Traversal<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: Traversal<Source, Target>,
+        rhs: Lens<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: Traversal<Source, Target>,
+        rhs: Prism<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
+    
+    public static func +<NewTarget>(
+        lhs: Traversal<Source, Target>,
+        rhs: AffineTraversal<Target, NewTarget>
+    ) -> Traversal<Source, NewTarget> {
+        lhs.compose(rhs)
+    }
 }
 
 public extension WritableKeyPath {
