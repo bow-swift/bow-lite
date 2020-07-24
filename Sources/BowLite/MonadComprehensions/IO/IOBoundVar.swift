@@ -1,6 +1,10 @@
+/// A bound variable is a variable to be used in a monad comprehesion to bind the produced values by a monadic effect.
 public class IOBoundVar<Failure: Error, Value> {
     private var value: Value? = nil
     
+    /// Makes a bound variable.
+    ///
+    /// - Returns: A bound variable.
     public static func make() -> IOBoundVar<Failure, Value> {
         IOBoundVar()
     }
@@ -11,12 +15,24 @@ public class IOBoundVar<Failure: Error, Value> {
         self.value = value
     }
     
+    /// Obtains the value that has been bound to this variable.
+    ///
+    /// If no value has been bound to the variable when this property is invoked, a fatal error is triggered.
     public var get: Value {
         return value!
     }
     
     internal var erased: IOBoundVar<Failure, Any> {
         IOErasedBoundVar<Failure, Value>(self)
+    }
+}
+
+public extension IO {
+    /// Creates a bound variable in this monadic context for the specified type.
+    ///
+    /// - Returns: A bound variable.
+    static func `var`() -> IOBoundVar<Failure, Success> {
+        .make()
     }
 }
 

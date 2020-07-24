@@ -1,3 +1,7 @@
+/// A binding expression is one of the instructions of the form `x <- fx` in a monad comprehension.
+///
+/// In a binding expression of the form `x <- fx`, `x` is the variable to be bound and `fx` is the
+/// monadic effect that we want to bind to the variable.
 public class IOBindingExpression<Failure: Error> {
     internal let bound: IOBoundVar<Failure, Any>
     internal let fa: () -> IO<Failure, Any>
