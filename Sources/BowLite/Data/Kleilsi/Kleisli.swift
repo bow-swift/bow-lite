@@ -22,6 +22,24 @@ public func >=><A, B, C>(
     andThen(f, g)
 }
 
+// MARK: Kleisli for Eval
+
+public func andThen<A, B, C>(
+    _ f: @escaping (A) -> Eval<B>,
+    _ g: @escaping (B) -> Eval<C>
+) -> (A) -> Eval<C> {
+    { a in
+        f(a).flatMap(g)
+    }
+}
+
+public func >=><A, B, C>(
+    _ f: @escaping (A) -> Eval<B>,
+    _ g: @escaping (B) -> Eval<C>
+) -> (A) -> Eval<C> {
+    andThen(f, g)
+}
+
 // MARK: Kleisli for Either
 
 public func andThen<A, B, C, D>(
@@ -199,5 +217,41 @@ public func >=><A, B, C, D: Monoid>(
     _ f: @escaping (A) -> Writer<D, B>,
     _ g: @escaping (B) -> Writer<D, C>
 ) -> (A) -> Writer<D, C> {
+    andThen(f, g)
+}
+
+// MARK: Kleisli for IO
+
+public func andThen<A, B, C, D>(
+    _ f: @escaping (A) -> IO<D, B>,
+    _ g: @escaping (B) -> IO<D, C>
+) -> (A) -> IO<D, C> {
+    { a in
+        f(a).flatMap(g)
+    }
+}
+
+public func >=><A, B, C, D>(
+    _ f: @escaping (A) -> IO<D, B>,
+    _ g: @escaping (B) -> IO<D, C>
+) -> (A) -> IO<D, C> {
+    andThen(f, g)
+}
+
+// MARK: Kleisli for EnvIO
+
+public func andThen<A, B, C, D, E>(
+    _ f: @escaping (A) -> EnvIO<D, E, B>,
+    _ g: @escaping (B) -> EnvIO<D, E, C>
+) -> (A) -> EnvIO<D, E, C> {
+    { a in
+        f(a).flatMap(g)
+    }
+}
+
+public func >=><A, B, C, D, E>(
+    _ f: @escaping (A) -> EnvIO<D, E, B>,
+    _ g: @escaping (B) -> EnvIO<D, E, C>
+) -> (A) -> EnvIO<D, E, C> {
     andThen(f, g)
 }
