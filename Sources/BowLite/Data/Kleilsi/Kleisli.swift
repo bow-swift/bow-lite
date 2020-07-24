@@ -6,6 +6,12 @@ infix operator >=>: KleisliCompositionPrecedence
 
 // MARK: Kleisli for Array
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C>(
     _ f: @escaping (A) -> [B],
     _ g: @escaping (B) -> [C]
@@ -15,6 +21,12 @@ public func andThen<A, B, C>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C>(
     _ f: @escaping (A) -> [B],
     _ g: @escaping (B) -> [C]
@@ -24,6 +36,12 @@ public func >=><A, B, C>(
 
 // MARK: Kleisli for Eval
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C>(
     _ f: @escaping (A) -> Eval<B>,
     _ g: @escaping (B) -> Eval<C>
@@ -33,6 +51,12 @@ public func andThen<A, B, C>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C>(
     _ f: @escaping (A) -> Eval<B>,
     _ g: @escaping (B) -> Eval<C>
@@ -42,6 +66,12 @@ public func >=><A, B, C>(
 
 // MARK: Kleisli for Either
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C, D>(
     _ f: @escaping (A) -> Either<D, B>,
     _ g: @escaping (B) -> Either<D, C>
@@ -51,6 +81,12 @@ public func andThen<A, B, C, D>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C, D>(
     _ f: @escaping (A) -> Either<D, B>,
     _ g: @escaping (B) -> Either<D, C>
@@ -60,6 +96,12 @@ public func >=><A, B, C, D>(
 
 // MARK: Kleisli for Function
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C, D>(
     _ f: @escaping (A) -> Function<D, B>,
     _ g: @escaping (B) -> Function<D, C>
@@ -69,6 +111,12 @@ public func andThen<A, B, C, D>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C, D>(
     _ f: @escaping (A) -> Function<D, B>,
     _ g: @escaping (B) -> Function<D, C>
@@ -78,6 +126,12 @@ public func >=><A, B, C, D>(
 
 // MARK: Kleisli for Id
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C>(
     _ f: @escaping (A) -> Id<B>,
     _ g: @escaping (B) -> Id<C>
@@ -87,6 +141,12 @@ public func andThen<A, B, C>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C>(
     _ f: @escaping (A) -> Id<B>,
     _ g: @escaping (B) -> Id<C>
@@ -96,6 +156,12 @@ public func >=><A, B, C>(
 
 // MARK: Kleisli for Ior
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C, D: Monoid>(
     _ f: @escaping (A) -> Ior<D, B>,
     _ g: @escaping (B) -> Ior<D, C>
@@ -105,6 +171,12 @@ public func andThen<A, B, C, D: Monoid>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C, D: Monoid>(
     _ f: @escaping (A) -> Ior<D, B>,
     _ g: @escaping (B) -> Ior<D, C>
@@ -114,6 +186,12 @@ public func >=><A, B, C, D: Monoid>(
 
 // MARK: Kleisli for NEA
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C>(
     _ f: @escaping (A) -> NEA<B>,
     _ g: @escaping (B) -> NEA<C>
@@ -123,6 +201,12 @@ public func andThen<A, B, C>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C>(
     _ f: @escaping (A) -> NEA<B>,
     _ g: @escaping (B) -> NEA<C>
@@ -132,6 +216,12 @@ public func >=><A, B, C>(
 
 // MARK: Kleisli for Optional
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C>(
     _ f: @escaping (A) -> B?,
     _ g: @escaping (B) -> C?
@@ -141,6 +231,12 @@ public func andThen<A, B, C>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C>(
     _ f: @escaping (A) -> B?,
     _ g: @escaping (B) -> C?
@@ -150,6 +246,12 @@ public func >=><A, B, C>(
 
 // MARK: Kleisli for Result
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C, D: Error>(
     _ f: @escaping (A) -> Result<B, D>,
     _ g: @escaping (B) -> Result<C, D>
@@ -159,6 +261,12 @@ public func andThen<A, B, C, D: Error>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C, D: Error>(
     _ f: @escaping (A) -> Result<B, D>,
     _ g: @escaping (B) -> Result<C, D>
@@ -168,6 +276,12 @@ public func >=><A, B, C, D: Error>(
 
 // MARK: Kleisli for State
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C, D>(
     _ f: @escaping (A) -> State<D, B>,
     _ g: @escaping (B) -> State<D, C>
@@ -177,6 +291,12 @@ public func andThen<A, B, C, D>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C, D>(
     _ f: @escaping (A) -> State<D, B>,
     _ g: @escaping (B) -> State<D, C>
@@ -186,6 +306,12 @@ public func >=><A, B, C, D>(
 
 // MARK: Kleisli for Try
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C>(
     _ f: @escaping (A) -> Try<B>,
     _ g: @escaping (B) -> Try<C>
@@ -195,6 +321,12 @@ public func andThen<A, B, C>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C>(
     _ f: @escaping (A) -> Try<B>,
     _ g: @escaping (B) -> Try<C>
@@ -204,6 +336,12 @@ public func >=><A, B, C>(
 
 // MARK: Kleisli for Writer
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C, D: Monoid>(
     _ f: @escaping (A) -> Writer<D, B>,
     _ g: @escaping (B) -> Writer<D, C>
@@ -213,6 +351,12 @@ public func andThen<A, B, C, D: Monoid>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C, D: Monoid>(
     _ f: @escaping (A) -> Writer<D, B>,
     _ g: @escaping (B) -> Writer<D, C>
@@ -222,6 +366,12 @@ public func >=><A, B, C, D: Monoid>(
 
 // MARK: Kleisli for IO
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C, D>(
     _ f: @escaping (A) -> IO<D, B>,
     _ g: @escaping (B) -> IO<D, C>
@@ -231,6 +381,12 @@ public func andThen<A, B, C, D>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C, D>(
     _ f: @escaping (A) -> IO<D, B>,
     _ g: @escaping (B) -> IO<D, C>
@@ -240,6 +396,12 @@ public func >=><A, B, C, D>(
 
 // MARK: Kleisli for EnvIO
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func andThen<A, B, C, D, E>(
     _ f: @escaping (A) -> EnvIO<D, E, B>,
     _ g: @escaping (B) -> EnvIO<D, E, C>
@@ -249,6 +411,12 @@ public func andThen<A, B, C, D, E>(
     }
 }
 
+/// Composes two effectful functions.
+///
+/// - Parameters:
+///   - f: Left-hand side of the composition.
+///   - g: Right-hand side of the composition.
+/// - Returns: A function resulting from the Kleisli composition of the two effectful functions provided.
 public func >=><A, B, C, D, E>(
     _ f: @escaping (A) -> EnvIO<D, E, B>,
     _ g: @escaping (B) -> EnvIO<D, E, C>
