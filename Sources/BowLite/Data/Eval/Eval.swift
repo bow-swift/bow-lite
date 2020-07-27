@@ -191,33 +191,66 @@ private class Bind<Value, B>: Eval<B> {
 }
 
 public extension Eval {
+    /// Creates a new value transforming this type using the provided function, preserving the structure of the original type.
+    ///
+    /// The implementation of this function must obey two laws:
+    ///
+    /// 1. Preserve identity:
+    ///
+    ///         map(fa, id) == fa
+    ///
+    /// 2. Preserve composition:
+    ///
+    ///         map(map(fa, f), g) == map(fa, compose(g, f))
+    ///
+    /// - Parameters:
+    ///   - f: A transforming function.
+    /// - Returns: The result of transforming the value type using the provided function, maintaining the structure of the original value.
     func map<B>(_ f: @escaping (Value) -> B) -> Eval<B> {
         EvalFMap(self, f)
     }
 }
 
 public extension Eval {
+    /// Lifts a value to the this context type.
+    ///
+    /// - Parameter a: Value to be lifted.
+    /// - Returns: Provided value in this context type.
     static func pure(_ a: Value) -> Eval<Value> {
         Eval.now(a)
     }
 }
 
 public extension Eval {
+    /// Sequentially compose two computations, passing any value produced by the first as an argument to the second.
+    ///
+    /// - Parameters:
+    ///   - f: A function describing the second computation, which depends on the value of the first.
+    /// - Returns: Result of composing the two computations.
     func flatMap<B>(_ f: @escaping (Value) -> Eval<B>) -> Eval<B> {
         Bind(self, f)
     }
 }
 
 public extension Eval {
+    /// Applies a context-dependent function to this structure.
+    ///
+    /// - Parameters:
+    ///   - f: Context-dependent function.
+    /// - Returns: The result of applying the context-dependent function over the entire structure of this value.
     func coflatMap<B>(_ f: @escaping (Eval<Value>) -> B) -> Eval<B> {
         Eval<B>.later { f(self) }
     }
     
-    func extract(_ fa: Eval<Value>) -> Value {
+    /// Extracts the focused value of this context.
+    ///
+    /// - Returns: Focused Value in this context.
+    func extract() -> Value {
         self.value()
     }
 }
 
+// MARK: Conformance to Equatable for Eval
 extension Eval: Equatable where Value: Equatable {
     public static func ==(lhs: Eval<Value>, rhs: Eval<Value>) -> Bool {
         lhs.value() == rhs.value()
