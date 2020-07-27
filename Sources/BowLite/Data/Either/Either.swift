@@ -50,8 +50,8 @@ public enum Either<Left, Right> {
     /// Transforms both type parameters, preserving the structure of this value.
     ///
     /// - Parameters:
-    ///   - fa: Closure to be applied when there is a left value.
-    ///   - fb: Closure to be applied when there is a right value.
+    ///   - f: Closure to be applied when there is a left value.
+    ///   - g: Closure to be applied when there is a right value.
     /// - Returns: Result of applying the corresponding closure to this value.
     public func bimap<L, R>(
         _ f: @escaping (Left) -> L,

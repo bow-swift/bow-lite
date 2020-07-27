@@ -1,7 +1,14 @@
+/// Validated is a data type to represent valid and invalid values. It is similar to `Either`, but with error accumulation in the invalid case.
 public enum Validated<Invalid, Valid> {
     case invalid(Invalid)
     case valid(Valid)
     
+    /// Applies the provided closures based on the content of this `Validated` value.
+    ///
+    /// - Parameters:
+    ///   - ifInvalid: Closure to apply if the contained value is invalid.
+    ///   - ifValid: Closure to apply if the contained value is valid.
+    /// - Returns: Result of applying the corresponding closure to the contained value.
     public func fold<A>(
         _ ifInvalid: @escaping (Invalid) -> A,
         _ ifValid: @escaping (Valid) -> A
@@ -12,22 +19,32 @@ public enum Validated<Invalid, Valid> {
         }
     }
     
+    /// Checks if this value is invalid.
     public var isInvalid: Bool {
         fold(constant(true), constant(false))
     }
     
+    /// Checks if this value is valid.
     public var isValid: Bool {
         !isInvalid
     }
     
+    /// Obtains the invalid value, if present.
     public var invalidValue: Invalid? {
         fold(id, constant(nil))
     }
     
+    /// Obtains the valid value, if present.
     public var validValue: Valid? {
         fold(constant(nil), id)
     }
     
+    /// Transforms both type parameters, preserving the structure of this value.
+    ///
+    /// - Parameters:
+    ///   - f: Closure to be applied when there is a left value.
+    ///   - g: Closure to be applied when there is a right value.
+    /// - Returns: Result of applying the corresponding closure to this value.
     public func bimap<A, B>(
         _ f: @escaping (Invalid) -> A,
         _ g: @escaping (Valid) -> B
@@ -37,8 +54,10 @@ public enum Validated<Invalid, Valid> {
     }
 }
 
+// MARK: Conformance to Equatable for Validated
 extension Validated: Equatable where Invalid: Equatable, Valid: Equatable {}
 
+// MARK: Conformance to CustomStringConvertible for Validated
 extension Validated: CustomStringConvertible where Invalid: CustomStringConvertible, Valid: CustomStringConvertible {
     public var description: String {
         fold(
