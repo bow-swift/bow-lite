@@ -1,4 +1,10 @@
 public extension Result {
+    /// Applies the provided closures based on the content of this `Result` value.
+    ///
+    /// - Parameters:
+    ///   - ifSuccess: Closure to apply if the contained value in this `Result` is a member of the Success type.
+    ///   - ifFailure: Closure to apply if the contained value in this `Result` is a member of the Failure type.
+    /// - Returns: Result of applying the corresponding closure to this value.
     func fold<A>(
         _ ifSuccess: @escaping (Success) -> A,
         _ ifFailure: @escaping (Failure) -> A
@@ -10,6 +16,7 @@ public extension Result {
     }
 }
 
+// MARK: Instance of Semigroup for Result
 extension Result: Semigroup where Failure: Semigroup, Success: Semigroup {
     public func combine(_ other: Result<Success, Failure>) -> Result<Success, Failure> {
         switch (self, other) {
@@ -23,6 +30,7 @@ extension Result: Semigroup where Failure: Semigroup, Success: Semigroup {
     }
 }
 
+// MARK: Instance of Monoid for Result
 extension Result: Monoid where Failure: Monoid, Success: Monoid {
     public static var empty: Result<Success, Failure> {
         .success(.empty)

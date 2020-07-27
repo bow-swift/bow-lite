@@ -26,8 +26,8 @@ public enum Either<Left, Right> {
     /// Applies the provided closures based on the content of this `Either` value.
     ///
     /// - Parameters:
-    ///   - fa: Closure to apply if the contained value in this `Either` is a member of the left type.
-    ///   - fb: Closure to apply if the contained value in this `Either` is a member of the right type.
+    ///   - ifLeft: Closure to apply if the contained value in this `Either` is a member of the left type.
+    ///   - ifRight: Closure to apply if the contained value in this `Either` is a member of the right type.
     /// - Returns: Result of applying the corresponding closure to this value.
     public func fold<A>(
         _ ifLeft: @escaping (Left) -> A,
