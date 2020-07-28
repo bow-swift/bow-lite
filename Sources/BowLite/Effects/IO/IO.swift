@@ -15,7 +15,7 @@ public typealias IOProc<Failure: Error, Success> = (@escaping Callback<Failure, 
 /// An asynchronous operation that might fail.
 public typealias IOProcF<Failure: Error, Success> = (@escaping Callback<Failure, Success>) -> IO<Failure, Void>
 
-/// An IO is a data type that encapsulates and suspends side effects producing values of type `A` or errors of type `E`.
+/// An IO is a data type that encapsulates and suspends side effects producing values of type `Success` or errors of type `Failure`.
 public class IO<Failure: Error, Success> {
     
     /// Creates an EnvIO with no dependencies from this IO.
@@ -25,7 +25,7 @@ public class IO<Failure: Error, Success> {
     
     /// Creates an IO from a side-effectful function.
     ///
-    /// - Parameter f: Side-effectful function. Errors thrown from this function must be of type `E`; otherwise, a fatal error will happen.
+    /// - Parameter f: Side-effectful function. Errors thrown from this function must be of type `Failure`; otherwise, a fatal error will happen.
     /// - Returns: An IO suspending the execution of the side effect.
     public static func invoke(_ f: @escaping () throws -> Success) -> IO<Failure, Success> {
         IO.defer {
@@ -41,7 +41,7 @@ public class IO<Failure: Error, Success> {
     
     /// Creates an IO from a side-effectful function.
     ///
-    /// - Parameter f: Side-effectful function returning an `Either`. Errors thrown from this function must be of type `E`; otherwise, a fatal error will happen.
+    /// - Parameter f: Side-effectful function returning an `Either`. Errors thrown from this function must be of type `Failure`; otherwise, a fatal error will happen.
     /// - Returns: An IO suspending the execution of the side effect.
     public static func invokeEither(_ f: @escaping () throws -> Either<Failure, Success>) -> IO<Failure, Success> {
         IO.defer {
@@ -57,7 +57,7 @@ public class IO<Failure: Error, Success> {
     
     /// Creates an IO from a side-effectful function.
     ///
-    /// - Parameter f: Side-effectful function returning a `Result`. Errors thrown from this function must be of type `E`; otherwise, a fatal error will happen.
+    /// - Parameter f: Side-effectful function returning a `Result`. Errors thrown from this function must be of type `Failure`; otherwise, a fatal error will happen.
     /// - Returns: An IO suspending the execution of the side effect.
     public static func invokeResult(_ f: @escaping () throws -> Result<Success, Failure>) -> IO<Failure, Success> {
         invokeEither { try f().fold(Either.right, Either.left) }
@@ -65,7 +65,7 @@ public class IO<Failure: Error, Success> {
     
     /// Creates an IO from a side-effectful function.
     ///
-    /// - Parameter f: Side-effectful function returning an `Validated`. Errors thrown from this function must be of type `E`; otherwise, a fatal error will happen.
+    /// - Parameter f: Side-effectful function returning an `Validated`. Errors thrown from this function must be of type `Failure`; otherwise, a fatal error will happen.
     /// - Returns: An IO suspending the execution of the side effect.
     public static func invokeValidated(_ f: @escaping () throws -> Validated<Failure, Success>) -> IO<Failure, Success> {
         invokeEither { try f().fold(Either.left, Either.right) }
@@ -83,7 +83,7 @@ public class IO<Failure: Error, Success> {
         mapError(fe).map(fa)
     }
     
-    /// Creates an IO from 2 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `E`; otherwise, a fatal error will happen.
+    /// Creates an IO from 2 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `Failure`; otherwise, a fatal error will happen.
     ///
     /// - Parameters:
     ///   - fa: 1st side-effectful function.
@@ -96,7 +96,7 @@ public class IO<Failure: Error, Success> {
                IO<Failure, B>.invoke(fb))
     }
     
-    /// Creates an IO from 3 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `E`; otherwise, a fatal error will happen.
+    /// Creates an IO from 3 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `Failure`; otherwise, a fatal error will happen.
     ///
     /// - Parameters:
     ///   - fa: 1st side-effectful function.
@@ -112,7 +112,7 @@ public class IO<Failure: Error, Success> {
                IO<Failure, C>.invoke(fc))
     }
     
-    /// Creates an IO from 4 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `E`; otherwise, a fatal error will happen.
+    /// Creates an IO from 4 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `Failure`; otherwise, a fatal error will happen.
     ///
     /// - Parameters:
     ///   - fa: 1st side-effectful function.
@@ -131,7 +131,7 @@ public class IO<Failure: Error, Success> {
                IO<Failure, D>.invoke(fd))
     }
     
-    /// Creates an IO from 5 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `E`; otherwise, a fatal error will happen.
+    /// Creates an IO from 5 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `Failure`; otherwise, a fatal error will happen.
     ///
     /// - Parameters:
     ///   - fa: 1st side-effectful function.
@@ -153,7 +153,7 @@ public class IO<Failure: Error, Success> {
                IO<Failure, F>.invoke(ff))
     }
     
-    /// Creates an IO from 6 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `E`; otherwise, a fatal error will happen.
+    /// Creates an IO from 6 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `Failure`; otherwise, a fatal error will happen.
     ///
     /// - Parameters:
     ///   - fa: 1st side-effectful function.
@@ -178,7 +178,7 @@ public class IO<Failure: Error, Success> {
                IO<Failure, G>.invoke(fg))
     }
     
-    /// Creates an IO from 7 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `E`; otherwise, a fatal error will happen.
+    /// Creates an IO from 7 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `Failure`; otherwise, a fatal error will happen.
     ///
     /// - Parameters:
     ///   - fa: 1st side-effectful function.
@@ -206,7 +206,7 @@ public class IO<Failure: Error, Success> {
                IO<Failure, H>.invoke(fh))
     }
     
-    /// Creates an IO from 8 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `E`; otherwise, a fatal error will happen.
+    /// Creates an IO from 8 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `Failure`; otherwise, a fatal error will happen.
     ///
     /// - Parameters:
     ///   - fa: 1st side-effectful function.
@@ -237,7 +237,7 @@ public class IO<Failure: Error, Success> {
                IO<Failure, I>.invoke(fi))
     }
     
-    /// Creates an IO from 9 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `E`; otherwise, a fatal error will happen.
+    /// Creates an IO from 9 side-effectful functions, tupling their results. Errors thrown from the functions must be of type `Failure`; otherwise, a fatal error will happen.
     ///
     /// - Parameters:
     ///   - fa: 1st side-effectful function.
@@ -275,7 +275,7 @@ public class IO<Failure: Error, Success> {
     ///
     /// - Parameter queue: Dispatch queue used to execute the side effects. Defaults to the main queue.
     /// - Returns: Value produced after running the suspended side effects.
-    /// - Throws: Error of type `E` that may happen during the evaluation of the side-effects. Errors of other types thrown from the evaluation of this IO will cause a fatal error.
+    /// - Throws: Error of type `Failure` that may happen during the evaluation of the side-effects. Errors of other types thrown from the evaluation of this IO will cause a fatal error.
     public func unsafeRunSync(on queue: DispatchQueue = .main) throws -> Success {
         let either = self.unsafeRunSyncEither(on: queue)
         switch either {
@@ -445,7 +445,7 @@ public extension IO where Success == Void {
 public extension IO where Failure == Error {
     /// Creates an IO from a side-effectful function.
     ///
-    /// - Parameter f: Side-effectful function returning a `Try`. Errors thrown from this function must be of type `E`; otherwise, a fatal error will happen.
+    /// - Parameter f: Side-effectful function returning a `Try`. Errors thrown from this function must be of type `Failure`; otherwise, a fatal error will happen.
     /// - Returns: An IO suspending the execution of the side effect.
     static func invokeTry(_ f: @escaping () throws -> Try<Success>) -> IO<Error, Success> {
         invokeEither { try f().fold(Either.left, Either.right) }
