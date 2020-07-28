@@ -1,7 +1,7 @@
 public extension Result {
     /// Lifts an error to this context.
     ///
-    /// - Parameter e: A value of the error type.
+    /// - Parameter error: A value of the error type.
     /// - Returns: A value representing the error in this context.
     static func raiseError(_ error: Failure) -> Result<Success, Failure> {
         .failure(error)

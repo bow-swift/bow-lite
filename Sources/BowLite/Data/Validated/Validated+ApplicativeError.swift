@@ -1,7 +1,7 @@
 public extension Validated {
     /// Lifts an error to this context.
     ///
-    /// - Parameter e: A value of the error type.
+    /// - Parameter invalid: A value of the error type.
     /// - Returns: A value representing the error in this context.
     static func raiseError(_ invalid: Invalid) -> Validated<Invalid, Valid> {
         .invalid(invalid)

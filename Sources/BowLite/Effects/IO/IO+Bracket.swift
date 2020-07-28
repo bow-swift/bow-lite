@@ -47,6 +47,12 @@ public func ==<E: Equatable>(lhs: ExitCase<E>, rhs: ExitCase<E>) -> Bool {
 }
 
 public extension IO {
+    /// A way to safely acquire a resource and release in the face of errors and cancellations.
+    ///
+    /// - Parameters:
+    ///   - release: Function to release the acquired resource, ignoring the outcome of the release of the resource.
+    ///   - use: Function to use the acquired resource.
+    /// - Returns: Computation describing the result of using the resource.
     func bracket<Output>(
         release: @escaping (Success) -> IO<Failure, Void>,
         use: @escaping (Success) -> IO<Failure, Output>
@@ -56,14 +62,27 @@ public extension IO {
             use: use)
     }
     
+    /// Forces a resource to be uncancelable even when an interruption happens.
+    ///
+    /// - Returns: An uncancelable computation.
     func uncancelable() -> IO<Failure, Success> {
         bracket(release: constant(IO<Failure, Void>.pure(())), use: Self.pure)
     }
     
+    /// Executes the given finalizer when the source is finished, either in success, error or cancelation.
+    ///
+    /// - Parameters:
+    ///   - finalizer: Finalizer function to be invoked when the resource is released.
+    /// - Returns: A computation describing the resouce that will invoke the finalizer when it is released.
     func guarantee(finalizer: IO<Failure, Void>) -> IO<Failure, Success> {
         guaranteeCase(finalizer: constant(finalizer))
     }
     
+    /// Executes the given finalizer when the source is finished, either in success, error or cancelation, alowing to differentiate between exit conditions.
+    ///
+    /// - Parameters:
+    ///   - finalizer: Finalizer function to be invoked when the resource is released, distinguishing the exit case.
+    /// - Returns: A computation describing the resource that will invoke the finalizer when it is released.
     func guaranteeCase(finalizer: @escaping (ExitCase<Failure>) -> IO<Failure, Void>) -> IO<Failure, Success> {
         IO<Failure, Void>.pure(())
             .bracketCase(release: { _, exit in finalizer(exit) },

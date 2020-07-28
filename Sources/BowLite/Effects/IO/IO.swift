@@ -6,10 +6,13 @@ public typealias Task<Success> = IO<Error, Success>
 /// An UIO is an IO operation that never fails; i.e. it never produces errors.
 public typealias UIO<Success> = IO<Never, Success>
 
+/// A callback that receives an error or a value.
 public typealias Callback<Failure: Error, Success> = (Either<Failure, Success>) -> Void
 
+/// An asynchronous operation that might fail.
 public typealias IOProc<Failure: Error, Success> = (@escaping Callback<Failure, Success>) -> Void
 
+/// An asynchronous operation that might fail.
 public typealias IOProcF<Failure: Error, Success> = (@escaping Callback<Failure, Success>) -> IO<Failure, Void>
 
 /// An IO is a data type that encapsulates and suspends side effects producing values of type `A` or errors of type `E`.
@@ -784,37 +787,73 @@ internal class Suspend<E: Error, A>: IO<E, A> {
 }
 
 public extension IO {
-    func map<B>(
-        _ f: @escaping (Success) -> B) -> IO<Failure, B> {
+    /// Creates a new value transforming this type using the provided function, preserving the structure of the original type.
+    ///
+    /// The implementation of this function must obey two laws:
+    ///
+    /// 1. Preserve identity:
+    ///
+    ///         map(fa, id) == fa
+    ///
+    /// 2. Preserve composition:
+    ///
+    ///         map(map(fa, f), g) == map(fa, compose(g, f))
+    ///
+    /// - Parameters:
+    ///   - f: A transforming function.
+    /// - Returns: The result of transforming the value type using the provided function, maintaining the structure of the original value.
+    func map<B>(_ f: @escaping (Success) -> B) -> IO<Failure, B> {
         FMap(f, self)
     }
 }
 
 public extension IO {
+    /// Lifts a value to the this context type.
+    ///
+    /// - Parameter a: Value to be lifted.
+    /// - Returns: Provided value in this context type.
     static func pure(_ a: Success) -> IO<Failure, Success> {
         Pure(a)
     }
 }
 
 public extension IO {
-    func flatMap<B>(
-        _ f: @escaping (Success) -> IO<Failure, B>) -> IO<Failure, B> {
+    /// Sequentially compose two computations, passing any value produced by the first as an argument to the second.
+    ///
+    /// - Parameters:
+    ///   - f: A function describing the second computation, which depends on the value of the first.
+    /// - Returns: Result of composing the two computations.
+    func flatMap<B>(_ f: @escaping (Success) -> IO<Failure, B>) -> IO<Failure, B> {
         Join(self.map { x in f(x) })
     }
 }
 
 public extension IO {
+    /// Lifts an error to this context.
+    ///
+    /// - Parameter e: A value of the error type.
+    /// - Returns: A value representing the error in this context.
     static func raiseError(_ e: Failure) -> IO<Failure, Success> {
         RaiseError(e)
     }
     
-    func handleErrorWith(
-        _ f: @escaping (Failure) -> IO<Failure, Success>) -> IO<Failure, Success> {
+    /// Handles an error, potentially recovering from it by mapping it to a value in this context.
+    ///
+    /// - Parameters:
+    ///   - f: A recovery function.
+    /// - Returns: A value where the possible errors have been recovered using the provided function.
+    func handleErrorWith(_ f: @escaping (Failure) -> IO<Failure, Success>) -> IO<Failure, Success> {
         HandleErrorWith(self) { e in f(e) }
     }
 }
 
 public extension IO {
+    /// A way to safely acquire a resource and release in the face of errors and cancellations. It uses `ExitCase` to distinguish between different exit cases when releasing the acquired resource.
+    ///
+    /// - Parameters:
+    ///   - release: Function to release the acquired resource.
+    ///   - use: Function to use the acquired resource.
+    /// - Returns: Computation describing the result of using the resource.
     func bracketCase<B>(
         release: @escaping (Success, ExitCase<Failure>) -> IO<Failure, Void>,
         use: @escaping (Success) throws -> IO<Failure, B>) -> IO<Failure, B> {
@@ -823,29 +862,54 @@ public extension IO {
 }
 
 public extension IO {
+    /// Provides a computation that evaluates the provided function on every run.
+    ///
+    /// - Parameter fa: Function returning a computation to be deferred.
+    /// - Returns: A computation that defers the execution of the provided function.
     static func `defer`(_ fa: @escaping () -> IO<Failure, Success>) -> IO<Failure, Success> {
         Suspend(fa)
     }
 }
 
 public extension IO {
+    /// Suspends side effects in the provided registration function. The parameter function is injected with a side-effectful callback for signaling the result of an asynchronous process.
+    ///
+    /// - Parameter procf: Asynchronous operation.
+    /// - Returns: A computation describing the asynchronous operation.
     static func asyncF(_ procf: @escaping IOProcF<Failure, Success>) -> IO<Failure, Success> {
         AsyncIO(procf)
     }
     
-    func continueOn(
-        _ queue: DispatchQueue) -> IO<Failure, Success> {
+    /// Switches the evaluation of this computation to a different `DispatchQueue`.
+    ///
+    /// - Parameters:
+    ///   - queue: A Dispatch Queue.
+    /// - Returns: A computation that will run on the provided queue.
+    func continueOn(_ queue: DispatchQueue) -> IO<Failure, Success> {
         ContinueOn(self, queue)
     }
 }
 
 public extension IO {
+    /// Runs 2 computations in parallel and returns the result of the first one finishing.
+    ///
+    /// - Parameters:
+    ///   - fa: 1st computation
+    ///   - fb: 2nd computation
+    /// - Returns: A computation with the result of the first computation that finished.
     static func race<A, B>(
         _ fa: IO<Failure, A>,
         _ fb: IO<Failure, B>) -> IO<Failure, Either<A, B>> where Success == Either<A, B> {
         Race(fa, fb)
     }
     
+    /// Runs 2 computations in parallel and combines their results using the provided function.
+    ///
+    /// - Parameters:
+    ///   - fa: 1st computation.
+    ///   - fb: 2nd computation.
+    ///   - f: Combination function.
+    /// - Returns: A computation that describes the parallel execution.
     static func parMap<A, B>(
         _ fa: IO<Failure, A>,
         _ fb: IO<Failure, B>,
@@ -853,6 +917,14 @@ public extension IO {
         ParMap2(fa, fb, f)
     }
     
+    /// Runs 3 computations in parallel and combines their results using the provided function.
+    ///
+    /// - Parameters:
+    ///   - fa: 1st computation.
+    ///   - fb: 2nd computation.
+    ///   - fc: 3rd computation.
+    ///   - f: Combination function.
+    /// - Returns: A computation that describes the parallel execution.
     static func parMap<A, B, C>(
         _ fa: IO<Failure, A>,
         _ fb: IO<Failure, B>,
@@ -863,6 +935,11 @@ public extension IO {
 }
 
 public extension IO {
+    /// Evaluates a side-effectful computation.
+    ///
+    /// - Parameters:
+    ///   - callback: Callback to process the result of the computation.
+    /// - Returns: A computation describing the evaluation.
     func runAsync(
         _ callback: @escaping (Either<Failure, Success>) -> IO<Failure, Void>) -> IO<Failure, Void> {
         IOEffect(self, callback)
