@@ -9,7 +9,7 @@ public extension Either {
     /// Sequentially compose two computations, discarding the value produced by the first.
     ///
     /// - Parameters:
-    ///   - fb: 2nd computation.
+    ///   - fa: 2nd computation.
     /// - Returns: Result of running the second computation after the first one.
     func followedBy<A>(_ fa: Either<Left, A>) -> Either<Left, A> {
         self.flatMap(constant(fa))
@@ -18,7 +18,7 @@ public extension Either {
     /// Sequentially compose two computations, discarding the value produced by the second.
     ///
     /// - Parameters:
-    ///   - fb: 2nd computation.
+    ///   - fa: 2nd computation.
     /// - Returns: Result produced from the first computation after both are computed.
     func forEffect<A>(_ fa: Either<Left, A>) -> Either<Left, Right> {
         self.flatMap { wrapped in fa.as(wrapped) }
