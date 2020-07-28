@@ -244,7 +244,7 @@ public extension Eval {
     
     /// Extracts the focused value of this context.
     ///
-    /// - Returns: Focused Value in this context.
+    /// - Returns: Focused value in this context.
     func extract() -> Value {
         self.value()
     }
