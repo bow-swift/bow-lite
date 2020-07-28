@@ -22,16 +22,41 @@ public class IOResource<Failure: Error, Resource> {
 }
 
 public extension IOResource {
+    /// Creates a new value transforming this type using the provided function, preserving the structure of the original type.
+    ///
+    /// The implementation of this function must obey two laws:
+    ///
+    /// 1. Preserve identity:
+    ///
+    ///         map(fa, id) == fa
+    ///
+    /// 2. Preserve composition:
+    ///
+    ///         map(map(fa, f), g) == map(fa, compose(g, f))
+    ///
+    /// - Parameters:
+    ///   - f: A transforming function.
+    /// - Returns: The result of transforming the value type using the provided function, maintaining the structure of the original value.
     func map<B>(_ f: @escaping (Resource) -> B) -> IOResource<Failure, B> {
         self.flatMap { a in .pure(f(a)) }
     }
 }
 
 public extension IOResource {
+    /// Lifts a value to the this context type.
+    ///
+    /// - Parameter a: Value to be lifted.
+    /// - Returns: Provided value in this context type.
     static func pure(_ a: Resource) -> IOResource<Failure, Resource> {
         IORegularResource({ IO.pure(a) }, { _, _ in IO.pure(()) })
     }
     
+    /// Creates a tuple out of two values in this context.
+    ///
+    /// - Parameters:
+    ///   - fa: 1st value of the tuple.
+    ///   - fb: 2nd value of the tuple.
+    /// - Returns: A tuple in this context.
     static func zip<A, B>(
         _ fa: IOResource<Failure, A>,
         _ fb: IOResource<Failure, B>
@@ -41,6 +66,13 @@ public extension IOResource {
         }
     }
     
+    /// Combines the result of two computations in this context, using the provided function.
+    ///
+    /// - Parameters:
+    ///   - fa: 1st computation.
+    ///   - fb: 2nd computation.
+    ///   - f: Combination function.
+    /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B>(
         _ fa: IOResource<Failure, A>,
         _ fb: IOResource<Failure, B>,
@@ -51,6 +83,11 @@ public extension IOResource {
 }
 
 public extension IOResource {
+    /// Sequentially compose two computations, passing any value produced by the first as an argument to the second.
+    ///
+    /// - Parameters:
+    ///   - f: A function describing the second computation, which depends on the value of the first.
+    /// - Returns: Result of composing the two computations.
     func flatMap<B>(
         _ f: @escaping (Resource) -> IOResource<Failure, B>) -> IOResource<Failure, B> {
         IOBindResource<Failure, Resource, B>(self, f)
@@ -58,12 +95,29 @@ public extension IOResource {
 }
 
 public extension IOResource where Resource: Semigroup {
+    /// An associative operation to combine values of the implementing type.
+    ///
+    /// This operation must satisfy the semigroup laws:
+    ///
+    ///     a.combine(b).combine(c) == a.combine(b.combine(c))
+    ///
+    /// - Parameter other: Value to combine with the receiver.
+    /// - Returns: Combination of the receiver value with the parameter value.
     func combine(_ other: IOResource<Failure, Resource>) -> IOResource<Failure, Resource> {
         self.flatMap { r in other.map { r2 in r.combine(r2) } }
     }
 }
 
 public extension IOResource where Resource: Monoid {
+    /// Empty element.
+    ///
+    /// The empty element must obey the monoid laws:
+    ///
+    ///     a.combine(.empty) == .empty.combine(a) == a
+    ///
+    /// That is, combining any element with `empty` must return the original element.
+    ///
+    /// - Returns: A value of the implementing type satisfying the monoid laws.
     static var empty: IOResource<Failure, Resource> {
         .pure(Resource.empty)
     }
