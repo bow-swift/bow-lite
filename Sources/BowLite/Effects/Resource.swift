@@ -31,6 +31,23 @@ public extension IOResource {
     static func pure(_ a: Resource) -> IOResource<Failure, Resource> {
         IORegularResource({ IO.pure(a) }, { _, _ in IO.pure(()) })
     }
+    
+    static func zip<A, B>(
+        _ fa: IOResource<Failure, A>,
+        _ fb: IOResource<Failure, B>
+    ) -> IOResource<Failure, (A, B)> where Resource == (A, B) {
+        fa.flatMap { resource in
+            fb.map { other in (resource, other) }
+        }
+    }
+    
+    static func map<A, B>(
+        _ fa: IOResource<Failure, A>,
+        _ fb: IOResource<Failure, B>,
+        _ f: @escaping (A, B) -> Resource
+    ) -> IOResource<Failure, Resource> {
+        IOResource<Failure, (A, B)>.zip(fa, fb).map(f)
+    }
 }
 
 public extension IOResource {
