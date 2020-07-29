@@ -1,4 +1,4 @@
-public extension Pair {
+public extension Pair where First: Monoid {
     /// Sequentially compose two computations, passing any value produced by the first as an argument to the second.
     ///
     /// - Parameters:
@@ -7,7 +7,8 @@ public extension Pair {
     func flatMap<R>(
         _ f: @escaping (Second) -> Pair<First, R>
     ) -> Pair<First, R> {
-        fold(Pair<First, R>.left, f)
+        let pair = f(self.second)
+        return Pair<First, R>(self.first.combine(pair.first), pair.second)
     }
     
     /// Flattens this nested structure into a single layer.

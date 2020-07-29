@@ -1,4 +1,12 @@
-public extension IO {
+public extension Pair where First: Monoid {
+    /// Lifts a value to the this context type.
+    ///
+    /// - Parameter wrapped: Value to be lifted.
+    /// - Returns: Provided value in this context type.
+    static func pure(_ wrapped: Second) -> Pair<First, Second> {
+        Pair(.empty, wrapped)
+    }
+    
     /// Creates a tuple out of two values in this context.
     ///
     /// - Parameters:
@@ -6,9 +14,9 @@ public extension IO {
     ///   - fb: 2nd value of the tuple.
     /// - Returns: A tuple in this context.
     static func zip<A, B>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>
-    ) -> IO<Failure, (A, B)> where Success == (A, B) {
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>
+    ) -> Pair<First, (A, B)> where Second == (A, B) {
         fa.flatMap { a in
             fb.map { b in (a, b) }
         }
@@ -22,10 +30,10 @@ public extension IO {
     ///   - fc: 3rd value of the tuple.
     /// - Returns: A tuple in this context.
     static func zip<A, B, C>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>
-    ) -> IO<Failure, (A, B, C)> where Success == (A, B, C) {
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>
+    ) -> Pair<First, (A, B, C)> where Second == (A, B, C) {
         fa.flatMap { a in
             fb.flatMap { b in
                 fc.map { c in (a, b, c) }
@@ -42,11 +50,11 @@ public extension IO {
     ///   - d: 4th value of the tuple.
     /// - Returns: A tuple in this context.
     static func zip<A, B, C, D>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>
-    ) -> IO<Failure, (A, B, C, D)> where Success == (A, B, C, D) {
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>
+    ) -> Pair<First, (A, B, C, D)> where Second == (A, B, C, D) {
         fa.flatMap { a in
             fb.flatMap { b in
                 fc.flatMap { c in
@@ -66,12 +74,12 @@ public extension IO {
     ///   - fe: 5th value of the tuple.
     /// - Returns: A tuple in this context.
     static func zip<A, B, C, D, E>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>
-    ) -> IO<Failure, (A, B, C, D, E)> where Success == (A, B, C, D, E) {
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>
+    ) -> Pair<First, (A, B, C, D, E)> where Second == (A, B, C, D, E) {
         fa.flatMap { a in
             fb.flatMap { b in
                 fc.flatMap { c in
@@ -86,21 +94,21 @@ public extension IO {
     /// Creates a tuple out of six values in this context.
     ///
     /// - Parameters:
-    ///   - fa: 1st value of the tuple.
-    ///   - fb: 2nd value of the tuple.
-    ///   - fc: 3rd value of the tuple.
-    ///   - fd: 4th value of the tuple.
-    ///   - fe: 5th value of the tuple.
-    ///   - ff: 6th value of the tuple.
+    ///   - a: 1st value of the tuple.
+    ///   - b: 2nd value of the tuple.
+    ///   - c: 3rd value of the tuple.
+    ///   - d: 4th value of the tuple.
+    ///   - e: 5th value of the tuple.
+    ///   - f: 6th value of the tuple.
     /// - Returns: A tuple in this context.
     static func zip<A, B, C, D, E, F>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ ff: IO<Failure, F>
-    ) -> IO<Failure, (A, B, C, D, E, F)> where Success == (A, B, C, D, E, F) {
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ ff: Pair<First, F>
+    ) -> Pair<First, (A, B, C, D, E, F)> where Second == (A, B, C, D, E, F) {
         fa.flatMap { a in
             fb.flatMap { b in
                 fc.flatMap { c in
@@ -126,14 +134,14 @@ public extension IO {
     ///   - fg: 7th value of the tuple.
     /// - Returns: A tuple in this context.
     static func zip<A, B, C, D, E, F, G>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ ff: IO<Failure, F>,
-        _ fg: IO<Failure, G>
-    ) -> IO<Failure, (A, B, C, D, E, F, G)> where Success == (A, B, C, D, E, F, G) {
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ ff: Pair<First, F>,
+        _ fg: Pair<First, G>
+    ) -> Pair<First, (A, B, C, D, E, F, G)> where Second == (A, B, C, D, E, F, G) {
         fa.flatMap { a in
             fb.flatMap { b in
                 fc.flatMap { c in
@@ -162,15 +170,15 @@ public extension IO {
     ///   - fh: 8th value of the tuple.
     /// - Returns: A tuple in this context.
     static func zip<A, B, C, D, E, F, G, H>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ ff: IO<Failure, F>,
-        _ fg: IO<Failure, G>,
-        _ fh: IO<Failure, H>
-    ) -> IO<Failure, (A, B, C, D, E, F, G, H)> where Success == (A, B, C, D, E, F, G, H) {
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ ff: Pair<First, F>,
+        _ fg: Pair<First, G>,
+        _ fh: Pair<First, H>
+    ) -> Pair<First, (A, B, C, D, E, F, G, H)> where Second == (A, B, C, D, E, F, G, H) {
         fa.flatMap { a in
             fb.flatMap { b in
                 fc.flatMap { c in
@@ -202,16 +210,16 @@ public extension IO {
     ///   - fi: 9th value of the tuple.
     /// - Returns: A tuple in this context.
     static func zip<A, B, C, D, E, F, G, H, I>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ ff: IO<Failure, F>,
-        _ fg: IO<Failure, G>,
-        _ fh: IO<Failure, H>,
-        _ fi: IO<Failure, I>
-    ) -> IO<Failure, (A, B, C, D, E, F, G, H, I)> where Success == (A, B, C, D, E, F, G, H, I) {
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ ff: Pair<First, F>,
+        _ fg: Pair<First, G>,
+        _ fh: Pair<First, H>,
+        _ fi: Pair<First, I>
+    ) -> Pair<First, (A, B, C, D, E, F, G, H, I)> where Second == (A, B, C, D, E, F, G, H, I) {
         fa.flatMap { a in
             fb.flatMap { b in
                 fc.flatMap { c in
@@ -239,11 +247,11 @@ public extension IO {
     ///   - f: Combination function.
     /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ f: @escaping (A, B) -> Success
-    ) -> IO<Failure, Success> {
-        IO<Failure, (A, B)>.zip(fa, fb).map(f)
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ f: @escaping (A, B) -> Second
+    ) -> Pair<First, Second> {
+        Pair<First, (A, B)>.zip(fa, fb).map(f)
     }
     
     /// Combines the result of three computations in this context, using the provided function.
@@ -255,12 +263,12 @@ public extension IO {
     ///   - f: Combination function.
     /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B, C>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ f: @escaping (A, B, C) -> Success
-    ) -> IO<Failure, Success> {
-        IO<Failure, (A, B, C)>.zip(fa, fb, fc).map(f)
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ f: @escaping (A, B, C) -> Second
+    ) -> Pair<First, Second> {
+        Pair<First, (A, B, C)>.zip(fa, fb, fc).map(f)
     }
     
     /// Combines the result of four computations in this context, using the provided function.
@@ -273,13 +281,13 @@ public extension IO {
     ///   - f: Combination function.
     /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B, C, D>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ f: @escaping (A, B, C, D) -> Success
-    ) -> IO<Failure, Success> {
-        IO<Failure, (A, B, C, D)>.zip(fa, fb, fc, fd).map(f)
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ f: @escaping (A, B, C, D) -> Second
+    ) -> Pair<First, Second> {
+        Pair<First, (A, B, C, D)>.zip(fa, fb, fc, fd).map(f)
     }
     
     /// Combines the result of five computations in this context, using the provided function.
@@ -293,14 +301,14 @@ public extension IO {
     ///   - f: Combination function.
     /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B, C, D, E>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ f: @escaping (A, B, C, D, E) -> Success
-    ) -> IO<Failure, Success> {
-        IO<Failure, (A, B, C, D, E)>.zip(fa, fb, fc, fd, fe).map(f)
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ f: @escaping (A, B, C, D, E) -> Second
+    ) -> Pair<First, Second> {
+        Pair<First, (A, B, C, D, E)>.zip(fa, fb, fc, fd, fe).map(f)
     }
     
     /// Combines the result of six computations in this context, using the provided function.
@@ -315,15 +323,15 @@ public extension IO {
     ///   - f: Combination function.
     /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B, C, D, E, F>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ ff: IO<Failure, F>,
-        _ f: @escaping (A, B, C, D, E, F) -> Success
-    ) -> IO<Failure, Success> {
-        IO<Failure, (A, B, C, D, E, F)>.zip(fa, fb, fc, fd, fe, ff).map(f)
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ ff: Pair<First, F>,
+        _ f: @escaping (A, B, C, D, E, F) -> Second
+    ) -> Pair<First, Second> {
+        Pair<First, (A, B, C, D, E, F)>.zip(fa, fb, fc, fd, fe, ff).map(f)
     }
     
     /// Combines the result of seven computations in this context, using the provided function.
@@ -339,16 +347,16 @@ public extension IO {
     ///   - f: Combination function.
     /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B, C, D, E, F, G>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ ff: IO<Failure, F>,
-        _ fg: IO<Failure, G>,
-        _ f: @escaping (A, B, C, D, E, F, G) -> Success
-    ) -> IO<Failure, Success> {
-        IO<Failure, (A, B, C, D, E, F, G)>.zip(fa, fb, fc, fd, fe, ff, fg).map(f)
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ ff: Pair<First, F>,
+        _ fg: Pair<First, G>,
+        _ f: @escaping (A, B, C, D, E, F, G) -> Second
+    ) -> Pair<First, Second> {
+        Pair<First, (A, B, C, D, E, F, G)>.zip(fa, fb, fc, fd, fe, ff, fg).map(f)
     }
     
     /// Combines the result of eight computations in this context, using the provided function.
@@ -365,17 +373,17 @@ public extension IO {
     ///   - f: Combination function.
     /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B, C, D, E, F, G, H>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ ff: IO<Failure, F>,
-        _ fg: IO<Failure, G>,
-        _ fh: IO<Failure, H>,
-        _ f: @escaping (A, B, C, D, E, F, G, H) -> Success
-    ) -> IO<Failure, Success> {
-        IO<Failure, (A, B, C, D, E, F, G, H)>.zip(fa, fb, fc, fd, fe, ff, fg, fh).map(f)
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ ff: Pair<First, F>,
+        _ fg: Pair<First, G>,
+        _ fh: Pair<First, H>,
+        _ f: @escaping (A, B, C, D, E, F, G, H) -> Second
+    ) -> Pair<First, Second> {
+        Pair<First, (A, B, C, D, E, F, G, H)>.zip(fa, fb, fc, fd, fe, ff, fg, fh).map(f)
     }
     
     /// Combines the result of nine computations in this context, using the provided function.
@@ -393,18 +401,18 @@ public extension IO {
     ///   - f: Combination function.
     /// - Returns: Result of combining the provided computations, in this context.
     static func map<A, B, C, D, E, F, G, H, I>(
-        _ fa: IO<Failure, A>,
-        _ fb: IO<Failure, B>,
-        _ fc: IO<Failure, C>,
-        _ fd: IO<Failure, D>,
-        _ fe: IO<Failure, E>,
-        _ ff: IO<Failure, F>,
-        _ fg: IO<Failure, G>,
-        _ fh: IO<Failure, H>,
-        _ fi: IO<Failure, I>,
-        _ f: @escaping (A, B, C, D, E, F, G, H, I) -> Success
-    ) -> IO<Failure, Success> {
-        IO<Failure, (A, B, C, D, E, F, G, H, I)>.zip(fa, fb, fc, fd, fe, ff, fg, fh, fi).map(f)
+        _ fa: Pair<First, A>,
+        _ fb: Pair<First, B>,
+        _ fc: Pair<First, C>,
+        _ fd: Pair<First, D>,
+        _ fe: Pair<First, E>,
+        _ ff: Pair<First, F>,
+        _ fg: Pair<First, G>,
+        _ fh: Pair<First, H>,
+        _ fi: Pair<First, I>,
+        _ f: @escaping (A, B, C, D, E, F, G, H, I) -> Second
+    ) -> Pair<First, Second> {
+        Pair<First, (A, B, C, D, E, F, G, H, I)>.zip(fa, fb, fc, fd, fe, ff, fg, fh, fi).map(f)
     }
     
     /// Sequential application.
@@ -412,7 +420,7 @@ public extension IO {
     /// - Parameters:
     ///   - fa: A value in the context implementing this instance.
     /// - Returns: A value in this context, resulting from the transformation of the contained original value with the contained function.
-    func ap<A, B>(_ fa: IO<Failure, A>) -> IO<Failure, B> where Success == (A) -> B {
+    func ap<A, B>(_ fa: Pair<First, A>) -> Pair<First, B> where Second == (A) -> B {
         self.flatMap { f in
             fa.map { a in f(a) }
         }
@@ -423,7 +431,7 @@ public extension IO {
     /// - Parameters:
     ///   - fb: 2nd computation.
     /// - Returns: Result of running the second computation after the first one.
-    func zipRight<B>(_ fb: IO<Failure, B>) -> IO<Failure, B> {
+    func zipRight<B>(_ fb: Pair<First, B>) -> Pair<First, B> {
         .map(self, fb) { _, b in b }
     }
     
@@ -432,7 +440,7 @@ public extension IO {
     /// - Parameters:
     ///   - fb: 2nd computation.
     /// - Returns: Result produced from the first computation after both are computed.
-    func zipLeft<B>(_ fb: IO<Failure, B>) -> IO<Failure, Success> {
+    func zipLeft<B>(_ fb: Pair<First, B>) -> Pair<First, Second> {
         .map(self, fb) { wrapped, _ in wrapped }
     }
 }
