@@ -35,6 +35,16 @@ public struct Pair<First, Second> {
     ) -> Pair<A, B> {
         Pair<A, B>(f(self.first), g(self.second))
     }
+    
+    /// Transforms the first type parameter, preserving the structure of this value.
+    ///
+    /// - Parameter f: Transforming closure.
+    /// - Returns: Result of appliying the transformation to the first component in this value.
+    public func mapFirst<L>(
+        _ f: @escaping (First) -> L
+    ) -> Pair<L, Second> {
+        bimap(f, id)
+    }
 }
 
 // MARK: Conformance to Equatable for Pair
