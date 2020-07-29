@@ -36,3 +36,15 @@ public struct Pair<First, Second> {
         Pair<A, B>(f(self.first), g(self.second))
     }
 }
+
+// MARK: Conformance to Equatable for Pair
+
+extension Pair: Equatable where First: Equatable, Second: Equatable {}
+
+// MARK: Conformance to CustomStringConvertible for Pair
+
+extension Pair: CustomStringConvertible where First: CustomStringConvertible, Second: CustomStringConvertible {
+    public var description: String {
+        "(\(self.first.description), \(self.second.description))"
+    }
+}
