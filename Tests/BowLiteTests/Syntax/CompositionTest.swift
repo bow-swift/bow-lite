@@ -1,7 +1,6 @@
 import XCTest
 import SwiftCheck
-import Bow
-import BowLaws
+import BowLite
 
 class CompostionTest : XCTestCase {
     
