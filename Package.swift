@@ -9,13 +9,15 @@ let package = Package(
             name: "BowLite",
             targets: ["BowLite"]),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/bow-swift/SwiftCheck.git", from: "0.12.1"),
+    ],
     targets: [
         .target(
             name: "BowLite",
             dependencies: []),
         .testTarget(
             name: "BowLiteTests",
-            dependencies: ["BowLite"]),
+            dependencies: ["BowLite", "SwiftCheck"]),
     ]
 )
