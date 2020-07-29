@@ -40,3 +40,7 @@ extension Const: CustomStringConvertible where Constant: CustomStringConvertible
         "Const(\(self.value.description))"
     }
 }
+
+// MARK: Conformance to Equatable for Const
+
+extension Const: Equatable where Constant: Equatable {}
