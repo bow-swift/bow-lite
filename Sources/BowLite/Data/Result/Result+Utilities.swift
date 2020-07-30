@@ -14,6 +14,34 @@ public extension Result {
         case .success(let success): return ifSuccess(success)
         }
     }
+    
+    /// Converts this value to an Either.
+    ///
+    /// - Returns: An Either value that maps failures to the left case, and successes to the right case.
+    func toEither() -> Either<Failure, Success> {
+        fold(Either.right, Either.left)
+    }
+    
+    /// Converts this value to a Validated.
+    ///
+    /// - Returns: A Validated value that maps failures to the invalid case, and successes to the valid case.
+    func toValidated() -> Validated<Failure, Success> {
+        fold(Validated.valid, Validated.invalid)
+    }
+    
+    /// Converts this value to a ValidatedNEA.
+    ///
+    /// - Returns: A ValidatedNEA value that maps failures to the invalid case, and successes to the valid case.
+    func toValidatedNEA() -> ValidatedNEA<Failure, Success> {
+        toValidated().toValidatedNEA()
+    }
+    
+    /// Converts this value to a Try.
+    ///
+    /// - Returns: A Try value that maps failures to the failure case, and successes to the success case.
+    func toTry() -> Try<Success> {
+        fold(Try.success, Try.failure)
+    }
 }
 
 // MARK: Instance of Semigroup for Result
