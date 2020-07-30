@@ -62,6 +62,30 @@ public enum Validated<Invalid, Valid> {
     public func toValidatedNEA() -> ValidatedNEA<Invalid, Valid> {
         bimap(NEA.pure, id)
     }
+    
+    /// Converts this value to an Either.
+    ///
+    /// - Returns: An Either value that maps invalid values to the left case, and valid values to the right case.
+    public func toEither() -> Either<Invalid, Valid> {
+        fold(Either.left, Either.right)
+    }
+    
+}
+
+extension Validated where Invalid: Error {
+    /// Converts this value to a Result.
+    ///
+    /// - Returns: A Result value that maps invalid values to the failure case, and valid values to the success case.
+    public func toResult() -> Result<Valid, Invalid> {
+        fold(Result.failure, Result.success)
+    }
+    
+    /// Converts this value to a Try.
+    ///
+    /// - Returns: A Try value that maps invalid values to the failure case, and valid values to the success case.
+    public func toTry() -> Try<Valid> {
+        fold(Try.failure, Try.success)
+    }
 }
 
 // MARK: Conformance to Equatable for Validated
