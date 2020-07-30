@@ -1,13 +1,19 @@
 import SwiftCheck
 import BowLite
 
-enum AnyError: Error {
+enum AnyError: Error, Hashable {
     case randomFailure
 }
 
 extension AnyError: Arbitrary {
     static var arbitrary: Gen<AnyError> {
         Gen.fromElements(of: [.randomFailure])
+    }
+}
+
+extension AnyError: CoArbitrary {
+    static func coarbitrary<C>(_ x: AnyError) -> ((Gen<C>) -> Gen<C>) {
+        id
     }
 }
 
