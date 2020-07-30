@@ -1,3 +1,6 @@
+/// An alias over Validated where the invalid cases are accumulated using a non-empty array.
+public typealias ValidatedNEA<Invalid, Valid> = Validated<NEA<Invalid>, Valid>
+
 /// Validated is a data type to represent valid and invalid values. It is similar to `Either`, but with error accumulation in the invalid case.
 public enum Validated<Invalid, Valid> {
     case invalid(Invalid)
@@ -51,6 +54,13 @@ public enum Validated<Invalid, Valid> {
     ) -> Validated<A, B> {
         fold(Validated<A, B>.invalid <<< f,
              Validated<A, B>.valid <<< g)
+    }
+    
+    /// Converts this value into a ValidatedNEA.
+    ///
+    /// - Returns: A ValidatedNEA where invalid values are wrapped in a non-empty array.
+    public func toValidatedNEA() -> ValidatedNEA<Invalid, Valid> {
+        bimap(NEA.pure, id)
     }
 }
 
