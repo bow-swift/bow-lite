@@ -138,6 +138,36 @@ public enum Either<Left, Right> {
             predicate(right) ? Either.left(defaultValue) : Either.right(right)
         }
     }
+    
+    /// Converts this value into a Validated.
+    ///
+    /// - Returns: A Validated where left values are mapped to the invalid case, and right to the valid case.
+    public func toValidated() -> Validated<Left, Right> {
+        fold(Validated.invalid, Validated.valid)
+    }
+    
+    /// Converts this value into a ValidatedNEA.
+    ///
+    /// - Returns: A ValidatedNEA where left values are mapped to the invalid case, and right to the valid case.
+    public func toValidatedNEA() -> ValidatedNEA<Left, Right> {
+        toValidated().toValidatedNEA()
+    }
+}
+
+extension Either where Left: Error {
+    /// Converts this value into a Result.
+    ///
+    /// - Returns: A Result where left values are mapped to the failure case, and right to the success case.
+    public func toResult() -> Result<Right, Left> {
+        fold(Result.failure, Result.success)
+    }
+    
+    /// Converts this value into a Try.
+    ///
+    /// - Returns: A Try where left values are mapped to the failure case, and right to the success case.
+    public func toTry() -> Try<Right> {
+        fold(Try.failure, Try.success)
+    }
 }
 
 // MARK: Instance of Semigroup for Either
