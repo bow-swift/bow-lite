@@ -49,5 +49,26 @@ class IOMonadTest: XCTestCase {
                 ==
             IO<AnyError, Int>.pure(a)
         }
+    
+        property("Monad comprehensions equivalence to flatMap") <~ forAllNoShrink(ioGen, ioGen, ioGen) { fa, fb, fc in
+            let r1 = fa.flatMap { a in
+                fb.flatMap { b in
+                    fc.map { c in "\(a), \(b), \(c)" }
+                }
+            }
+            
+            let x = IO<AnyError, Int>.var()
+            let y = IO<AnyError, Int>.var()
+            let z = IO<AnyError, Int>.var()
+            
+            let r2 = binding(
+                x <-- fa,
+                y <-- fb,
+                z <-- fc,
+                yield: "\(x.get), \(y.get), \(z.get)"
+            )
+            
+            return r1 == r2
+        }
     }
 }
