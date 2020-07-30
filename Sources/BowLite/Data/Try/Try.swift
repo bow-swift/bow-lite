@@ -51,6 +51,34 @@ public enum Try<Success> {
     public var successValue: Success? {
         fold(constant(nil), id)
     }
+    
+    /// Converts this value into an Either.
+    ///
+    /// - Returns: An Either value where failures are mapped to the left case, and successes to the right case.
+    public func toEither() -> Either<Error, Success> {
+        fold(Either.left, Either.right)
+    }
+    
+    /// Converts this value into a Validated.
+    ///
+    /// - Returns: A Validated value where failures are mapped to the invalid case, and successes to the valid case.
+    public func toValidated() -> Validated<Error, Success> {
+        fold(Validated.invalid, Validated.valid)
+    }
+
+    /// Converts this value into a Validated.
+    ///
+    /// - Returns: A Validated value where failures are mapped to the invalid case, and successes to the valid case.
+    public func toValidatedNEA() -> ValidatedNEA<Error, Success> {
+        toValidated().toValidatedNEA()
+    }
+    
+    /// Converts this value into a Result.
+    ///
+    /// - Returns: A Result value where failures are mapped to the failure case, and successes to the success case.
+    public func toResult() -> Result<Success, Error> {
+        fold(Result.failure, Result.success)
+    }
 }
 
 // MARK: Conformance of CustomStringConvertible for Try
