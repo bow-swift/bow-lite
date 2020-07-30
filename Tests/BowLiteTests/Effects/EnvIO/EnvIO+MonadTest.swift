@@ -49,5 +49,26 @@ class EnvIOMonadTest: XCTestCase {
                 ==
             EnvIO<Int, AnyError, Int>.pure(a)
         }
+        
+        property("Monad comprehensions equivalence to flatMap") <~ forAllNoShrink(envIOGen, envIOGen, envIOGen) { fa, fb, fc in
+            let r1 = fa.flatMap { a in
+                fb.flatMap { b in
+                    fc.map { c in "\(a), \(b), \(c)" }
+                }
+            }
+            
+            let x = EnvIO<Int, AnyError, Int>.var()
+            let y = EnvIO<Int, AnyError, Int>.var()
+            let z = EnvIO<Int, AnyError, Int>.var()
+            
+            let r2 = binding(
+                x <-- fa,
+                y <-- fb,
+                z <-- fc,
+                yield: "\(x.get), \(y.get), \(z.get)"
+            )
+            
+            return r1 == r2
+        }
     }
 }
