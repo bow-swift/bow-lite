@@ -16,7 +16,7 @@ public extension State {
     /// - Returns: The result of transforming the value type using the provided function, maintaining the structure of the original value.
     func map<B>(_ f: @escaping (Value) -> B) -> State<StateType, B> {
         State<StateType, B> { state in
-            let (newState, value) = self(state)
+            let (newState, value) = self.invoke(state)
             return (newState, f(value))
         }
     }

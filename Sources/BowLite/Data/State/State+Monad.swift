@@ -6,8 +6,8 @@ public extension State {
     /// - Returns: Result of composing the two computations.
     func flatMap<A>(_ f: @escaping (Value) -> State<StateType, A>) -> State<StateType, A> {
         State<StateType, A> { state in
-            let (newState, value) = self(state)
-            return f(value)(newState)
+            let (newState, value) = self.invoke(state)
+            return f(value).invoke(newState)
         }
     }
     

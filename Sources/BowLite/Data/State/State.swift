@@ -24,9 +24,17 @@ public struct State<StateType, Value> {
     /// Invokes this value with an initial state.
     ///
     /// - Parameter initialState: Initial state to be fed in the state-based function.
+    /// - Returns: A tuple with the final state and result.
+    public func invoke(_ initialState: StateType) -> (StateType, Value) {
+        f(initialState)
+    }
+    
+    /// Invokes this value with an initial state.
+    ///
+    /// - Parameter initialState: Initial state to be fed in the state-based function.
     /// - Returns: Final state resulting from the evaluation of the computation.
     public func runState(_ initialState: StateType) -> StateType {
-        self(initialState).0
+        self.invoke(initialState).0
     }
     
     /// Invokes this value with an initial state.
@@ -34,7 +42,7 @@ public struct State<StateType, Value> {
     /// - Parameter initialState: Initial state to be fed in the state-based function.
     /// - Returns: Final value resulting from the evaluation of the computation.
     public func runValue(_ initialState: StateType) -> Value {
-        self(initialState).1
+        self.invoke(initialState).1
     }
     
     /// Modifies the state type of this computation using to functions to get and set part of this state from a larger state.
@@ -48,7 +56,7 @@ public struct State<StateType, Value> {
         _ setter: @escaping (S, StateType) -> S
     ) -> State<S, Value> {
         State<S, Value> { state in
-            let (newState, result) = self(getter(state))
+            let (newState, result) = self.invoke(getter(state))
             return (setter(state, newState), result)
         }
     }

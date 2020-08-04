@@ -18,8 +18,8 @@ public extension State {
         _ fb: State<StateType, B>
     ) -> State<StateType, (A, B)> where Value == (A, B) {
         State { state in
-            let (sa, a) = fa(state)
-            let (sb, b) = fb(sa)
+            let (sa, a) = fa.invoke(state)
+            let (sb, b) = fb.invoke(sa)
             return (sb, (a, b))
         }
     }
@@ -37,9 +37,9 @@ public extension State {
         _ fc: State<StateType, C>
     ) -> State<StateType, (A, B, C)> where Value == (A, B, C) {
         State { state in
-            let (sa, a) = fa(state)
-            let (sb, b) = fb(sa)
-            let (sc, c) = fc(sb)
+            let (sa, a) = fa.invoke(state)
+            let (sb, b) = fb.invoke(sa)
+            let (sc, c) = fc.invoke(sb)
             return (sc, (a, b, c))
         }
     }
@@ -59,10 +59,10 @@ public extension State {
         _ fd: State<StateType, D>
     ) -> State<StateType, (A, B, C, D)> where Value == (A, B, C, D) {
         State { state in
-            let (sa, a) = fa(state)
-            let (sb, b) = fb(sa)
-            let (sc, c) = fc(sb)
-            let (sd, d) = fd(sc)
+            let (sa, a) = fa.invoke(state)
+            let (sb, b) = fb.invoke(sa)
+            let (sc, c) = fc.invoke(sb)
+            let (sd, d) = fd.invoke(sc)
             return (sd, (a, b, c, d))
         }
     }
@@ -84,11 +84,11 @@ public extension State {
         _ fe: State<StateType, E>
     ) -> State<StateType, (A, B, C, D, E)> where Value == (A, B, C, D, E) {
         State { state in
-            let (sa, a) = fa(state)
-            let (sb, b) = fb(sa)
-            let (sc, c) = fc(sb)
-            let (sd, d) = fd(sc)
-            let (se, e) = fe(sd)
+            let (sa, a) = fa.invoke(state)
+            let (sb, b) = fb.invoke(sa)
+            let (sc, c) = fc.invoke(sb)
+            let (sd, d) = fd.invoke(sc)
+            let (se, e) = fe.invoke(sd)
             return (se, (a, b, c, d, e))
         }
     }
@@ -112,12 +112,12 @@ public extension State {
         _ ff: State<StateType, F>
     ) -> State<StateType, (A, B, C, D, E, F)> where Value == (A, B, C, D, E, F) {
         State { state in
-            let (sa, a) = fa(state)
-            let (sb, b) = fb(sa)
-            let (sc, c) = fc(sb)
-            let (sd, d) = fd(sc)
-            let (se, e) = fe(sd)
-            let (sf, f) = ff(se)
+            let (sa, a) = fa.invoke(state)
+            let (sb, b) = fb.invoke(sa)
+            let (sc, c) = fc.invoke(sb)
+            let (sd, d) = fd.invoke(sc)
+            let (se, e) = fe.invoke(sd)
+            let (sf, f) = ff.invoke(se)
             return (sf, (a, b, c, d, e, f))
         }
     }
@@ -143,13 +143,13 @@ public extension State {
         _ fg: State<StateType, G>
     ) -> State<StateType, (A, B, C, D, E, F, G)> where Value == (A, B, C, D, E, F, G) {
         State { state in
-            let (sa, a) = fa(state)
-            let (sb, b) = fb(sa)
-            let (sc, c) = fc(sb)
-            let (sd, d) = fd(sc)
-            let (se, e) = fe(sd)
-            let (sf, f) = ff(se)
-            let (sg, g) = fg(sf)
+            let (sa, a) = fa.invoke(state)
+            let (sb, b) = fb.invoke(sa)
+            let (sc, c) = fc.invoke(sb)
+            let (sd, d) = fd.invoke(sc)
+            let (se, e) = fe.invoke(sd)
+            let (sf, f) = ff.invoke(se)
+            let (sg, g) = fg.invoke(sf)
             return (sg, (a, b, c, d, e, f, g))
         }
     }
@@ -177,14 +177,14 @@ public extension State {
         _ fh: State<StateType, H>
     ) -> State<StateType, (A, B, C, D, E, F, G, H)> where Value == (A, B, C, D, E, F, G, H) {
         State { state in
-            let (sa, a) = fa(state)
-            let (sb, b) = fb(sa)
-            let (sc, c) = fc(sb)
-            let (sd, d) = fd(sc)
-            let (se, e) = fe(sd)
-            let (sf, f) = ff(se)
-            let (sg, g) = fg(sf)
-            let (sh, h) = fh(sg)
+            let (sa, a) = fa.invoke(state)
+            let (sb, b) = fb.invoke(sa)
+            let (sc, c) = fc.invoke(sb)
+            let (sd, d) = fd.invoke(sc)
+            let (se, e) = fe.invoke(sd)
+            let (sf, f) = ff.invoke(se)
+            let (sg, g) = fg.invoke(sf)
+            let (sh, h) = fh.invoke(sg)
             return (sh, (a, b, c, d, e, f, g, h))
         }
     }
@@ -214,15 +214,15 @@ public extension State {
         _ fi: State<StateType, I>
     ) -> State<StateType, (A, B, C, D, E, F, G, H, I)> where Value == (A, B, C, D, E, F, G, H, I) {
         State { state in
-            let (sa, a) = fa(state)
-            let (sb, b) = fb(sa)
-            let (sc, c) = fc(sb)
-            let (sd, d) = fd(sc)
-            let (se, e) = fe(sd)
-            let (sf, f) = ff(se)
-            let (sg, g) = fg(sf)
-            let (sh, h) = fh(sg)
-            let (si, i) = fi(sh)
+            let (sa, a) = fa.invoke(state)
+            let (sb, b) = fb.invoke(sa)
+            let (sc, c) = fc.invoke(sb)
+            let (sd, d) = fd.invoke(sc)
+            let (se, e) = fe.invoke(sd)
+            let (sf, f) = ff.invoke(se)
+            let (sg, g) = fg.invoke(sf)
+            let (sh, h) = fh.invoke(sg)
+            let (si, i) = fi.invoke(sh)
             return (si, (a, b, c, d, e, f, g, h, i))
         }
     }
