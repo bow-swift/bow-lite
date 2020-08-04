@@ -6,7 +6,7 @@ public extension Function {
     /// - Returns: Result of composing the two computations.
     func flatMap<A>(_ f: @escaping (Output) -> Function<Input, A>) -> Function<Input, A> {
         Function<Input, A> { input in
-            f(self(input))(input)
+            f(self.invoke(input)).invoke(input)
         }
     }
     

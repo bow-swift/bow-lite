@@ -17,6 +17,14 @@ public struct Function<Input, Output> {
         f(input)
     }
     
+    /// Invokes this function.
+    ///
+    /// - Parameter input: Input for the function.
+    /// - Returns: Result of the invocation.
+    public func invoke(_ input: Input) -> Output {
+        f(input)
+    }
+    
     /// Concatenates another function.
     ///
     /// - Parameter other: Function to concatenate.

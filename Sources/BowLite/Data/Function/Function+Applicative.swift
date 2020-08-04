@@ -18,8 +18,8 @@ public extension Function {
         _ fb: Function<Input, B>
     ) -> Function<Input, (A, B)> where Output == (A, B) {
         Function { input in
-            (fa(input),
-             fb(input))
+            (fa.invoke(input),
+             fb.invoke(input))
         }
     }
     
@@ -36,9 +36,9 @@ public extension Function {
         _ fc: Function<Input, C>
     ) -> Function<Input, (A, B, C)> where Output == (A, B, C) {
         Function { input in
-            (fa(input),
-             fb(input),
-             fc(input))
+            (fa.invoke(input),
+             fb.invoke(input),
+             fc.invoke(input))
         }
     }
     
@@ -57,10 +57,10 @@ public extension Function {
         _ fd: Function<Input, D>
     ) -> Function<Input, (A, B, C, D)> where Output == (A, B, C, D) {
         Function { input in
-            (fa(input),
-             fb(input),
-             fc(input),
-             fd(input))
+            (fa.invoke(input),
+             fb.invoke(input),
+             fc.invoke(input),
+             fd.invoke(input))
         }
     }
     
@@ -81,11 +81,11 @@ public extension Function {
         _ fe: Function<Input, E>
     ) -> Function<Input, (A, B, C, D, E)> where Output == (A, B, C, D, E) {
         Function { input in
-            (fa(input),
-             fb(input),
-             fc(input),
-             fd(input),
-             fe(input))
+            (fa.invoke(input),
+             fb.invoke(input),
+             fc.invoke(input),
+             fd.invoke(input),
+             fe.invoke(input))
         }
     }
     
@@ -108,12 +108,12 @@ public extension Function {
         _ ff: Function<Input, F>
     ) -> Function<Input, (A, B, C, D, E, F)> where Output == (A, B, C, D, E, F) {
         Function { input in
-            (fa(input),
-             fb(input),
-             fc(input),
-             fd(input),
-             fe(input),
-             ff(input))
+            (fa.invoke(input),
+             fb.invoke(input),
+             fc.invoke(input),
+             fd.invoke(input),
+             fe.invoke(input),
+             ff.invoke(input))
         }
     }
     
@@ -138,13 +138,13 @@ public extension Function {
         _ fg: Function<Input, G>
     ) -> Function<Input, (A, B, C, D, E, F, G)> where Output == (A, B, C, D, E, F, G) {
         Function { input in
-            (fa(input),
-             fb(input),
-             fc(input),
-             fd(input),
-             fe(input),
-             ff(input),
-             fg(input))
+            (fa.invoke(input),
+             fb.invoke(input),
+             fc.invoke(input),
+             fd.invoke(input),
+             fe.invoke(input),
+             ff.invoke(input),
+             fg.invoke(input))
         }
     }
     
@@ -171,14 +171,14 @@ public extension Function {
         _ fh: Function<Input, H>
     ) -> Function<Input, (A, B, C, D, E, F, G, H)> where Output == (A, B, C, D, E, F, G, H) {
         Function { input in
-            (fa(input),
-             fb(input),
-             fc(input),
-             fd(input),
-             fe(input),
-             ff(input),
-             fg(input),
-             fh(input))
+            (fa.invoke(input),
+             fb.invoke(input),
+             fc.invoke(input),
+             fd.invoke(input),
+             fe.invoke(input),
+             ff.invoke(input),
+             fg.invoke(input),
+             fh.invoke(input))
         }
     }
     
@@ -207,15 +207,15 @@ public extension Function {
         _ fi: Function<Input, I>
     ) -> Function<Input, (A, B, C, D, E, F, G, H, I)> where Output == (A, B, C, D, E, F, G, H, I) {
         Function { input in
-            (fa(input),
-             fb(input),
-             fc(input),
-             fd(input),
-             fe(input),
-             ff(input),
-             fg(input),
-             fh(input),
-             fi(input))
+            (fa.invoke(input),
+             fb.invoke(input),
+             fc.invoke(input),
+             fd.invoke(input),
+             fe.invoke(input),
+             ff.invoke(input),
+             fg.invoke(input),
+             fh.invoke(input),
+             fi.invoke(input))
         }
     }
     
