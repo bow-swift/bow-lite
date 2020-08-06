@@ -1,3 +1,5 @@
+![Bow Lite](assets/bow-lite-banner.png)
+
 Bow Lite is a cross-platform library for Typed Functional Programming in Swift. It is a lightweight version of [Bow](https://github.com/bow-swift/bow) where some complexity, like Higher Kinded Type emulation, has been removed.
 
 ## Documentation
