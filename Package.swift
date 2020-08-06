@@ -41,21 +41,44 @@ extension Target {
     }
 }
 
+// MARK: Laws
+extension Target {
+    static var laws: [Target] {
+        [
+            .bowLiteLaws
+        ]
+    }
+    
+    static var bowLiteLaws: Target {
+        .testTarget(
+            name: "BowLiteLaws",
+            dependencies: [Target.core.asDependency,
+                           Target.effects.asDependency,
+                           .product(name: "SwiftCheck", package: "SwiftCheck")],
+            path: "Tests/BowLiteLaws")
+    }
+}
+
 // MARK: Tests
 extension Target {
     static var tests: [Target] {
         [
-            .bowLiteTests,
+            .coreTests,
+            .effectsTests
         ]
     }
     
-    static var bowLiteTests: Target {
+    static var coreTests: Target {
         .testTarget(
-            name: "BowLiteTests",
+            name: "BowLiteCoreTests",
             dependencies: [Target.core.asDependency,
-                           Target.effects.asDependency,
-                           Target.optics.asDependency,
-                           .product(name: "SwiftCheck", package: "SwiftCheck")])
+                           Target.bowLiteLaws.asDependency])
+    }
+    
+    static var effectsTests: Target {
+        .testTarget(name: "BowLiteEffectsTests",
+                    dependencies: [Target.effects.asDependency,
+                                   Target.bowLiteLaws.asDependency])
     }
 }
 
@@ -74,6 +97,7 @@ let package = Package(
     
     targets: [
         Target.libraries,
+        Target.laws,
         Target.tests,
     ].flatMap { $0 }
 )
