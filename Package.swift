@@ -50,7 +50,7 @@ extension Target {
     }
     
     static var bowLiteLaws: Target {
-        .testTarget(
+        .target(
             name: "BowLiteLaws",
             dependencies: [Target.core.asDependency,
                            Target.effects.asDependency,

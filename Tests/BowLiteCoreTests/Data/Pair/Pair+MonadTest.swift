@@ -1,7 +1,7 @@
 import XCTest
 import SwiftCheck
-import BowLiteLaws
 import BowLiteCore
+import BowLiteLaws
 
 class PairMonadTest: XCTestCase {
     func testMonadLaws() {
@@ -22,8 +22,8 @@ class PairMonadTest: XCTestCase {
         
         property("Kleisli left identity") <~ forAll { (a: Int, f: ArrowOf<Int, Int>) in
             let g = f.getArrow >>> Pair<Int, Int>.pure
-            
-            return ({ (n: Int) in Pair<Int, Int>.pure(n) } >=> g)(a)
+
+            return ({ (n: Int) in Pair.pure(n) } >=> g)(a)
                 ==
             g(a)
         }

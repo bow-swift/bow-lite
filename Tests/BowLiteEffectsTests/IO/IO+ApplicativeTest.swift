@@ -1,5 +1,7 @@
 import XCTest
 import SwiftCheck
+
+import BowLiteCore
 import BowLiteLaws
 import BowLiteEffects
 
