@@ -12,11 +12,11 @@ All documentation is available in [our website](https://bow-swift.io/). Notice t
 
 ## Modules
 
-Bow Lite offers a single module that contains:
+Bow Lite offers an umbrella module `BowLite` that contains:
 
-- **Core**: a collection of the main data types typically used in FP projects, that you can find in the core module of Bow.
-- **Effects**: an implementation of the `IO` and `EnvIO` data types to deal with side effects, that you can find in the BowEffects module.
-- **Optics**: a monomorphic implementation of some optics, that you can find in the BowOptics module.
+- **BowLiteCore**: a collection of the main data types typically used in FP projects, that you can find in the core module of Bow.
+- **BowLiteEffects**: an implementation of the `IO` and `EnvIO` data types to deal with side effects, that you can find in the BowEffects module.
+- **BowLiteOptics**: a monomorphic implementation of some optics, that you can find in the BowOptics module.
 
 ## How to get it
 
@@ -24,6 +24,10 @@ Bow Lite is available using Swift Package Manager. You can include it using the 
 
 ```swift
 .package(url: "https://github.com/bow-swift/bow-lite.git", from: "{version}")
+```
+
+```swift
+import BowLite
 ```
 
 # License
