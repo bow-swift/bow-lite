@@ -12,6 +12,7 @@ extension Target {
 extension Target {
     static var libraries: [Target] {
         [
+            .bowLite,
             .core,
             .effects,
             .optics
@@ -27,11 +28,13 @@ extension Target {
         return .target(
             name: "BowLiteEffects",
             dependencies: [Target.core.asDependency],
+            path: "Sources/BowLiteEffects",
             exclude: ["Effects/Foundation/FileManager+iOS+Mac.swift"])
         #else
         return .target(
             name: "BowLiteEffects",
-            dependencies: [Target.core.asDependency])
+            dependencies: [Target.core.asDependency],
+            path: "Sources/BowLiteEffects")
         #endif
     }
     
@@ -39,30 +42,20 @@ extension Target {
         .target(name: "BowLiteOptics",
                 dependencies: [Target.core.asDependency])
     }
-}
-
-// MARK: Laws
-extension Target {
-    static var laws: [Target] {
-        [
-            .bowLiteLaws
-        ]
-    }
     
-    static var bowLiteLaws: Target {
-        .target(
-            name: "BowLiteLaws",
-            dependencies: [Target.core.asDependency,
-                           Target.effects.asDependency,
-                           .product(name: "SwiftCheck", package: "SwiftCheck")],
-            path: "Tests/BowLiteLaws")
+    static var bowLite: Target {
+        .target(name: "BowLite",
+                dependencies: [Target.core.asDependency,
+                               Target.effects.asDependency,
+                               Target.optics.asDependency])
     }
 }
 
-// MARK: Tests
+// MARK: Tests + Laws
 extension Target {
     static var tests: [Target] {
         [
+            .bowLiteLaws,
             .coreTests,
             .effectsTests
         ]
@@ -80,6 +73,14 @@ extension Target {
                     dependencies: [Target.effects.asDependency,
                                    Target.bowLiteLaws.asDependency])
     }
+    
+    static var bowLiteLaws: Target {
+        .testTarget(
+            name: "BowLiteLaws",
+            dependencies: [Target.core.asDependency,
+                           Target.effects.asDependency,
+                           .product(name: "SwiftCheck", package: "SwiftCheck")])
+    }
 }
 
 
@@ -88,7 +89,7 @@ let package = Package(
     name: "BowLite",
     
     products: [
-        .library(name: "BowLite", targets: Target.libraries.map(\.name))
+        .library(name: "BowLite", targets: [Target.bowLite.name]),
     ],
     
     dependencies: [
@@ -97,7 +98,6 @@ let package = Package(
     
     targets: [
         Target.libraries,
-        Target.laws,
         Target.tests,
     ].flatMap { $0 }
 )
