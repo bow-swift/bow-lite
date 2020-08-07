@@ -1,5 +1,9 @@
 ![Bow Lite](assets/bow-lite-banner.png)
 
+<p align="center">
+<a href="https://badge.bow-swift.io/recipe?name=bow-lite&description=Bow%20Lite%20is%20a%20cross-platform%20library%20for%20Typed%20Functional%20Programming%20in%20Swift&url=https://github.com/bow-swift/bow-lite&owner=bow-swift&avatar=https://avatars3.githubusercontent.com/u/44965417?v=4&branch=main"><img src="https://raw.githubusercontent.com/bow-swift/bow-art/master/badges/nef-playgrounds-badge.svg" alt="bow-lite Playground" style="height:20px"></a>
+</>
+
 Bow Lite is a cross-platform library for Typed Functional Programming in Swift. It is a lightweight version of [Bow](https://github.com/bow-swift/bow) where some complexity, like Higher Kinded Type emulation, has been removed.
 
 ## Documentation
@@ -8,11 +12,11 @@ All documentation is available in [our website](https://bow-swift.io/). Notice t
 
 ## Modules
 
-Bow Lite offers a single module that contains:
+Bow Lite offers an umbrella module `BowLite` that contains:
 
-- **Core**: a collection of the main data types typically used in FP projects, that you can find in the core module of Bow.
-- **Effects**: an implementation of the `IO` and `EnvIO` data types to deal with side effects, that you can find in the BowEffects module.
-- **Optics**: a monomorphic implementation of some optics, that you can find in the BowOptics module.
+- **BowLiteCore**: a collection of the main data types typically used in FP projects, that you can find in the core module of Bow.
+- **BowLiteEffects**: an implementation of the `IO` and `EnvIO` data types to deal with side effects, that you can find in the BowEffects module.
+- **BowLiteOptics**: a monomorphic implementation of some optics, that you can find in the BowOptics module.
 
 ## How to get it
 
@@ -20,6 +24,10 @@ Bow Lite is available using Swift Package Manager. You can include it using the 
 
 ```swift
 .package(url: "https://github.com/bow-swift/bow-lite.git", from: "{version}")
+```
+
+```swift
+import BowLite
 ```
 
 # License
