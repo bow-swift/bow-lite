@@ -1,18 +1,18 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.2
 
 import PackageDescription
 
 let package = Package(
     name: "BowLite",
-    
+
     products: [
         .library(name: "BowLite", targets: [Target.bowLite.name]),
     ],
-    
+
     dependencies: [
         .package(url: "https://github.com/bow-swift/SwiftCheck.git", from: "0.12.1"),
     ],
-    
+
     targets: [
         Target.libraries,
         Target.tests,
@@ -30,11 +30,11 @@ extension Target {
             .optics
         ]
     }
-    
+
     static var core: Target {
         .target(name: "BowLiteCore")
     }
-    
+
     static var effects: Target {
         #if os(Linux)
         return .target(name: "BowLiteEffects",
@@ -45,12 +45,12 @@ extension Target {
                        dependencies: [.target(name: Target.core.name)])
         #endif
     }
-    
+
     static var optics: Target {
         .target(name: "BowLiteOptics",
                 dependencies: [.target(name: Target.core.name)])
     }
-    
+
     static var bowLite: Target {
         .target(name: "BowLite",
                 dependencies: [.target(name: Target.core.name),
@@ -68,20 +68,20 @@ extension Target {
             .effectsTests
         ]
     }
-    
+
     static var coreTests: Target {
         .testTarget(
             name: "BowLiteCoreTests",
             dependencies: [.target(name: Target.core.name),
                            .target(name: Target.bowLiteLaws.name)])
     }
-    
+
     static var effectsTests: Target {
         .testTarget(name: "BowLiteEffectsTests",
                     dependencies: [.target(name: Target.effects.name),
                                    .target(name: Target.bowLiteLaws.name)])
     }
-    
+
     static var bowLiteLaws: Target {
         .testTarget(
             name: "BowLiteLaws",
