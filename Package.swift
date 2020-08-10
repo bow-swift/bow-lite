@@ -39,7 +39,7 @@ extension Target {
         return .target(
             name: "BowLiteEffects",
             dependencies: [.target(name: Target.core.name)],
-            exclude: ["Effects/Foundation/FileManager+iOS+Mac.swift"])
+            exclude: ["Foundation/FileManager+iOS+Mac.swift"])
         #else
         return .target(
             name: "BowLiteEffects",
