@@ -1,6 +1,11 @@
+# Swift Package Manager
 .DS_Store
-/.build
 /Packages
 /*.xcodeproj
 xcuserdata/
+.build
 .swiftpm
+
+# Linux - generated swift files
+LinuxMain.swift
+**/XCTestManifests.swift
