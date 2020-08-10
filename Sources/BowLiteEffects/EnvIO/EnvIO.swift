@@ -287,15 +287,6 @@ public struct EnvIO<Dependencies, Failure: Error, Success> {
               g >>> EnvIO<Dependencies, Failure, B>.pure)
     }
     
-    /// Executes this computation in a modified environment.
-    ///
-    /// - Parameters:
-    ///   - f: Funtion to modify the environment.
-    /// - Returns: Computation in the modified environment.
-    public func local(_ f: @escaping (Dependencies) -> Dependencies) -> EnvIO<Dependencies, Failure, Success> {
-        EnvIO(f >>> self.run)
-    }
-    
     /// Performs the side effects that are suspended in this IO in a synchronous manner.
     ///
     /// - Parameters:
@@ -462,15 +453,6 @@ public extension EnvIO where Dependencies == Any {
         _ callback: @escaping Callback<Failure, Success> = { _ in }
     ) {
         self.run(()).unsafeRunAsync(on: queue, callback)
-    }
-}
-
-public extension EnvIO where Success == Dependencies {
-    /// Retrieves the shared environment.
-    ///
-    /// - Returns: Shared environment.
-    static func ask() -> EnvIO<Dependencies, Failure, Dependencies> {
-        EnvIO { dependencies in IO.pure(dependencies) }
     }
 }
 
