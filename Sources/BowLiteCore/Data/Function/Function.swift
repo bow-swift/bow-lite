@@ -1,3 +1,6 @@
+/// Type alias over Function.
+public typealias Reader<Input, Output> = Function<Input, Output>
+
 /// This data type acts as a wrapper over functions. It receives two type parameters representing the input and output type of the function.
 public struct Function<Input, Output> {
     private let f: (Input) -> Output
