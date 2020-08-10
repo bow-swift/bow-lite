@@ -6,25 +6,24 @@ let package = Package(
     name: "BowLite",
 
     products: [
-        .library(name: "BowLite", targets: [Target.bowLite.name]),
+        .library(name: "BowLite", targets: [Target.lite.name]),
     ],
 
     dependencies: [
         .package(url: "https://github.com/bow-swift/SwiftCheck.git", from: "0.12.1"),
     ],
 
-    targets: [
-        Target.libraries,
-        Target.tests,
-    ].flatMap { $0 }
+    targets: Target.all
 )
 
 
 // MARK: - Libraries
 extension Target {
-    static var libraries: [Target] {
+    static var all: [Target] = sources + tests
+    
+    static var sources: [Target] {
         [
-            .bowLite,
+            .lite,
             .core,
             .effects,
             .optics
@@ -37,25 +36,32 @@ extension Target {
 
     static var effects: Target {
         #if os(Linux)
-        return .target(name: "BowLiteEffects",
-                       dependencies: [.target(name: Target.core.name)],
-                       exclude: ["Effects/Foundation/FileManager+iOS+Mac.swift"])
+        return .target(
+            name: "BowLiteEffects",
+            dependencies: [.target(name: Target.core.name)],
+            exclude: ["Effects/Foundation/FileManager+iOS+Mac.swift"])
         #else
-        return .target(name: "BowLiteEffects",
-                       dependencies: [.target(name: Target.core.name)])
+        return .target(
+            name: "BowLiteEffects",
+            dependencies: [.target(name: Target.core.name)])
         #endif
     }
 
     static var optics: Target {
-        .target(name: "BowLiteOptics",
-                dependencies: [.target(name: Target.core.name)])
+        .target(
+            name: "BowLiteOptics",
+            dependencies: [.target(name: Target.core.name)])
     }
 
-    static var bowLite: Target {
-        .target(name: "BowLite",
-                dependencies: [.target(name: Target.core.name),
-                               .target(name: Target.effects.name),
-                               .target(name: Target.optics.name)])
+    static var lite: Target {
+        .target(
+            name: "BowLite",
+            dependencies: [
+                .target(name: Target.core.name),
+                .target(name: Target.effects.name),
+                .target(name: Target.optics.name)
+            ]
+        )
     }
 }
 
@@ -63,7 +69,7 @@ extension Target {
 extension Target {
     static var tests: [Target] {
         [
-            .bowLiteLaws,
+            .laws,
             .coreTests,
             .effectsTests
         ]
@@ -72,21 +78,31 @@ extension Target {
     static var coreTests: Target {
         .testTarget(
             name: "BowLiteCoreTests",
-            dependencies: [.target(name: Target.core.name),
-                           .target(name: Target.bowLiteLaws.name)])
+            dependencies: [
+                .target(name: Target.core.name),
+                .target(name: Target.laws.name)
+            ]
+        )
     }
 
     static var effectsTests: Target {
-        .testTarget(name: "BowLiteEffectsTests",
-                    dependencies: [.target(name: Target.effects.name),
-                                   .target(name: Target.bowLiteLaws.name)])
+        .testTarget(
+            name: "BowLiteEffectsTests",
+            dependencies: [
+                .target(name: Target.effects.name),
+                .target(name: Target.laws.name)
+            ]
+        )
     }
 
-    static var bowLiteLaws: Target {
-        .testTarget(
+    static var laws: Target {
+        .target(
             name: "BowLiteLaws",
-            dependencies: [.target(name: Target.core.name),
-                           .target(name: Target.effects.name),
-                           .product(name: "SwiftCheck", package: "SwiftCheck")])
+            dependencies: [
+                .target(name: Target.core.name),
+                .target(name: Target.effects.name),
+                .product(name: "SwiftCheck", package: "SwiftCheck")
+            ],
+            path: "Tests/BowLiteLaws")
     }
 }
