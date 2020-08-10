@@ -41,4 +41,4 @@ jobs:
         name: generate-linuxmain
         failOnError: false
     - name: Run tests
-      run: swift test
+      run: swift test --parallel --num-workers 4
