@@ -2,24 +2,13 @@ import SwiftCheck
 import BowLiteLaws
 import BowLiteCore
 
-extension State: Arbitrary where StateType: Hashable & CoArbitrary & Arbitrary, Value: Arbitrary {
+extension State: Arbitrary where StateType: Hashable & Arbitrary & CoArbitrary, Value: Arbitrary {
     public static var arbitrary: Gen<State<StateType, Value>> {
-        ArrowOf<StateType, Tuple<StateType, Value>>.arbitrary.map { arrow in
+        Gen.zip(ArrowOf<StateType, StateType>.arbitrary,
+                ArrowOf<StateType, Value>.arbitrary).map { f, g in
             State { state in
-                let pair = arrow.getArrow(state)
-                return (pair.first, pair.second)
+                (f.getArrow(state), g.getArrow(state))
             }
         }
-    }
-}
-
-private struct Tuple<A, B> {
-    let first: A
-    let second: B
-}
-
-extension Tuple: Arbitrary where A: Arbitrary, B: Arbitrary {
-    static var arbitrary: Gen<Tuple<A, B>> {
-        Gen.zip(A.arbitrary, B.arbitrary).map(Tuple.init)
     }
 }
