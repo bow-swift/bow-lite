@@ -13,3 +13,32 @@ jobs:
       run: sudo xcode-select -s /Applications/Xcode_11.4.1.app/Contents/Developer
     - name: Run tests
       run: swift test
+    - name: Generate linux tests
+      run: swift test --generate-linuxmain
+    - name: Cached auto-generate linux tests
+      uses: actions/upload-artifact@v1
+      with:
+        name: generate-linuxmain
+        path: Tests
+
+  linux:
+    name: linux
+    needs: macos
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Clean Tests
+      run: rm -rf Tests
+    - name: Get auto-generate linux tests
+      uses: actions/download-artifact@v1
+      with:
+        name: generate-linuxmain
+        path: Tests
+    - name: Remove generated artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: generate-linuxmain
+        failOnError: false
+    - name: Run tests
+      run: swift test --parallel --num-workers 4
